@@ -1,0 +1,5 @@
+{
+    "require": {
+        "getkirby/cms": "^3.3"
+    }
+}
