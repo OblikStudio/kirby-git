@@ -1,2 +1,7 @@
 title: Site
-preset: pages
+
+columns:
+  main:
+    width: 1/3
+    sections:
+      git: true

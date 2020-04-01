@@ -7,3 +7,13 @@ composer.phar
 /media
 /site/accounts
 /site/sessions
+
+# Node
+/node_modules
+
+# Parcel
+/.cache
+
+# Artifacts
+/index.css
+/index.js

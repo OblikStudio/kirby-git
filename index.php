@@ -1,8 +1,10 @@
 <?php
 
-if (!class_exists('Kirby\Cms\App')) {
-  require_once 'kirby/bootstrap.php';
-  echo (new Kirby)->render();
+use Kirby\Cms\App;
+
+if (class_exists('Kirby\Cms\App')) {
+  App::plugin('oblik/git', require 'src/index.php');
 } else {
-  require_once 'plugin.php';
+  require_once 'kirby/bootstrap.php';
+  echo (new App)->render();
 }
