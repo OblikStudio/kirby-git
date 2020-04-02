@@ -35,47 +35,28 @@ return [
 					exec('git status -u --porcelain 2>&1', $output, $code);
 
 					$data = [
-						'changes' => count($output),
-						'staged' => [
-							'added' => [],
-							'modified' => [],
-							'deleted' => []
-						],
-						'unstaged' => [
-							'untracked' => [],
-							'modified' => [],
-							'deleted' => []
-						]
+						'status' => $code === 0
 					];
 
-					foreach ($output as $change) {
+					$data['files'] = array_map(function ($line) {
 						$matches = null;
+						$data = [];
 
-						if (preg_match('!(.{2}) (.+)!', $change, $matches)) {
-							$type = $matches[1];
-							$file = $matches[2];
+						if (preg_match('!(.{2}) (.+)!', $line, $matches)) {
+							$axes = str_split($matches[1]);
+							$data['file'] = $matches[2];
 
-							switch ($type) {
-								case 'A ':
-									$data['staged']['added'][] = $file;
-									break;
-								case 'M ':
-									$data['staged']['modified'][] = $file;
-									break;
-								case 'D ':
-									$data['staged']['deleted'][] = $file;
-									break;
-								case ' M':
-									$data['unstaged']['modified'][] = $file;
-									break;
-								case ' D':
-									$data['unstaged']['deleted'][] = $file;
-									break;
-								default:
-									$data['unstaged']['untracked'][] = $file;
+							if ($axes[0] !== ' ') {
+								$data['staged'] = $axes[0];
+							}
+
+							if ($axes[1] !== ' ') {
+								$data['unstaged'] = $axes[1];
 							}
 						}
-					}
+
+						return $data;
+					}, $output);
 
 					return array_filter_recursive($data);
 				}
