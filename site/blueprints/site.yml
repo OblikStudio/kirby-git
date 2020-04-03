@@ -1,7 +1,17 @@
-title: Site
+title: Sitea
 
 columns:
   main:
+    width: 2/3
+    sections:
+      fields:
+        fields:
+          text:
+            type: textarea
+
+  sidebar:
     width: 1/3
     sections:
       git: true
+      pages: true
+      files: true

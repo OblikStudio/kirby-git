@@ -34,11 +34,7 @@ return [
 
 					exec('git status -u --porcelain 2>&1', $output, $code);
 
-					$data = [
-						'status' => $code === 0
-					];
-
-					$data['files'] = array_map(function ($line) {
+					$data = array_map(function ($line) {
 						$matches = null;
 						$data = [];
 
