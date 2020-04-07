@@ -1,6 +1,8 @@
 <template>
   <section>
-    <k-headline>{{ finalHeadline }}</k-headline>
+    <header class="k-section-header">
+      <k-headline>{{ finalHeadline }}</k-headline>
+    </header>
 
     <k-box v-if="positiveStatus" :text="positiveStatus" theme="positive"></k-box>
     <k-box v-if="noticeStatus" :text="noticeStatus" theme="notice"></k-box>
