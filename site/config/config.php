@@ -1,5 +1,6 @@
 <?php
 
 return [
-  'debug' => true
+	'debug' => true,
+	'oblik.git.repo' => getcwd() . '/repo'
 ];

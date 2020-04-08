@@ -17,3 +17,6 @@ composer.phar
 # Artifacts
 /index.css
 /index.js
+
+# Test repo
+/repo
