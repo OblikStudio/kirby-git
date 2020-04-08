@@ -2,6 +2,7 @@
 	<section>
 		<header class="k-section-header">
 			<k-headline>{{ title }}</k-headline>
+			<slot name="action"></slot>
 		</header>
 
 		<k-list v-if="entries">
@@ -40,7 +41,7 @@ export default {
 	},
 	data () {
 		return {
-			perPage: 2,
+			perPage: 15,
 			pageIdx: 0
 		}
 	},

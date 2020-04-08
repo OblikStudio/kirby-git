@@ -27,12 +27,10 @@ return [
 		'routes' => [
 			[
 				'pattern' => 'git/status',
-				'auth' => false,
 				'action' => function () {
-					$code = null;
 					$output = [];
 
-					exec('git status -u --porcelain 2>&1', $output, $code);
+					exec('git status -u --porcelain 2>&1', $output);
 
 					$data = array_map(function ($line) {
 						$matches = null;
@@ -59,13 +57,13 @@ return [
 			],
 			[
 				'pattern' => 'git/add',
+				'method' => 'post',
 				'action' => function () {
-					$code = null;
 					$output = [];
 
-					exec('git add . --verbose 2>&1', $output, $code);
+					exec('git add . --verbose 2>&1', $output);
 
-					return compact('code', 'output');
+					return $output;
 				}
 			]
 		]
