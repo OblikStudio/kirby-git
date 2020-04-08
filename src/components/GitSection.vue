@@ -1,12 +1,23 @@
 <template>
 	<section>
+
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
 		</header>
 
-		<k-box v-if="positiveStatus" :text="positiveStatus" theme="positive"></k-box>
-		<k-box v-if="noticeStatus" :text="noticeStatus" theme="notice"></k-box>
-		<k-box v-if="negativeStatus" :text="negativeStatus" theme="negative"></k-box>
+		<k-list v-if="list.length">
+			<k-list-item
+				v-for="entry in list"
+				:key="entry.icon"
+				:text="entry.text"
+				:icon="{ type: entry.icon }"
+				:class="{ [`ob-theme-${ entry.icon }`]: true }"
+			></k-list-item>
+		</k-list>
+		<template v-else>
+			<k-empty icon="check">No changes</k-empty>
+		</template>
+
 	</section>
 </template>
 
@@ -79,6 +90,23 @@ export default {
 			} else {
 				return null
 			}
+		},
+		list () {
+			let result = []
+
+			if (this.negativeStatus) {
+				result.push({ icon: 'trash', text: this.negativeStatus })
+			}
+
+			if (this.noticeStatus) {
+				result.push({ icon: 'edit', text: this.noticeStatus })
+			}
+
+			if (this.positiveStatus) {
+				result.push({ icon: 'copy', text: this.positiveStatus })
+			}
+
+			return result
 		}
 	},
 	created () {

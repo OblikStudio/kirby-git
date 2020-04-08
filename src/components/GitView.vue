@@ -42,7 +42,7 @@ export default {
 					})
 				}
 
-				if (entry.staged) {
+				if (entry.staged && entry.staged !== '?') {
 					this.staged.push({
 						file: entry.file,
 						mode: entry.staged

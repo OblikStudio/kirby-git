@@ -85,7 +85,7 @@ export default {
 			switch (mode) {
 				case '?':
 				case 'A':
-					icon = 'add'
+					icon = 'copy'
 					break
 				case 'M':
 					icon = 'edit'
@@ -94,7 +94,7 @@ export default {
 					icon = 'refresh'
 					break
 				case 'D':
-					icon = 'remove'
+					icon = 'trash'
 			}
 
 			return icon
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style>
-.ob-theme-add .k-list-item-image {
+.ob-theme-copy .k-list-item-image {
 	background: var(--color-positive);
 }
 
@@ -113,7 +113,7 @@ export default {
 	background: var(--color-notice);
 }
 
-.ob-theme-remove .k-list-item-image {
+.ob-theme-trash .k-list-item-image {
 	background: var(--color-negative);
 }
 </style>
