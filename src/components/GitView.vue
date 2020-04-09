@@ -12,7 +12,30 @@
 			</k-column>
 
 			<k-column width="1/3">
-				<changes-list title="Staged" :data="this.staged" />
+				<changes-list title="Staged" :data="this.staged">
+					<k-button-group v-if="this.staged.length" slot="action">
+						<k-button icon="circle-filled" @click="$refs.commitDialog.open()">Commit</k-button>
+					</k-button-group>
+				</changes-list>
+
+				<k-dialog
+					ref="commitDialog"
+					theme="positive"
+					@submit="$refs.commitForm.submit()"
+				>
+					<k-form
+						ref="commitForm"
+						v-model="commitData"
+						:fields="{
+							message: {
+								type: 'text',
+								label: 'Message',
+								required: true
+							}
+						}"
+						@submit="commit"
+					/>
+				</k-dialog>
 			</k-column>
 
 			<k-column width="1/3">
@@ -33,7 +56,10 @@ export default {
 	data () {
 		return {
 			staged: [],
-			unstaged: []
+			unstaged: [],
+			commitData: {
+				message: null
+			}
 		}
 	},
 	created () {
@@ -67,6 +93,16 @@ export default {
 				return this.$api.get('git/status')
 			}).then(entries => {
 				this.updateStatus(entries)
+			})
+		},
+		commit () {
+			this.$api.post('git/commit', this.commitData).then(() => {
+				this.$refs.commitDialog.close()
+				return this.$api.get('git/status')
+			}).then(entries => {
+				this.updateStatus(entries)
+			}).catch(error => {
+				this.$refs.commitDialog.error(error.message)
 			})
 		}
 	}

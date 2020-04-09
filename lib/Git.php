@@ -73,4 +73,22 @@ class Git
 
 		return $output;
 	}
+
+	public function commit(string $author, string $message) {
+		$output = [];
+
+		exec('git commit --dry-run --porcelain', $output);
+
+		if (count($output) === 0) {
+			throw new Exception('Nothing to commit');
+		}
+
+		$output = [];
+		$author = escapeshellarg($author);
+		$message = escapeshellarg($message);
+
+		exec("git commit --message=$message --author=$author --no-status", $output);
+
+		return $output;
+	}
 }
