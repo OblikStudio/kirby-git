@@ -50,6 +50,14 @@ return [
 
 					return (new Git)->commit($author, $message);
 				}
+			],
+			[
+				'pattern' => 'git/log',
+				'method' => 'get',
+				'action' => function () {
+					$data = kirby()->request()->data();
+					return (new Git)->log($data['page'], $data['limit']);
+				}
 			]
 		]
 	]

@@ -18,14 +18,16 @@ function array_filter_recursive($input)
 class Git
 {
 	public $repo = null;
+	public $branch = null;
+	public $remote = null;
 
-	public function __construct(string $repo = null)
+	public function __construct()
 	{
-		if ($repo === null) {
-			$repo = option('oblik.git.repo') ?? getcwd();
-		}
+		$repo = option('oblik.git.repo') ?? getcwd();
 
 		$this->repo = realpath($repo);
+		$this->branch = option('oblik.git.branch');
+		$this->remote = option('oblik.git.remote');
 
 		if ($this->repo === false) {
 			throw new Exception('Inavlid repo path');
@@ -74,7 +76,8 @@ class Git
 		return $output;
 	}
 
-	public function commit(string $author, string $message) {
+	public function commit(string $author, string $message)
+	{
 		$output = [];
 
 		exec('git commit --dry-run --porcelain', $output);
@@ -90,5 +93,42 @@ class Git
 		exec("git commit --message=$message --author=$author --no-status", $output);
 
 		return $output;
+	}
+
+	public function log(int $page, int $limit)
+	{
+		$branch = $this->branch;
+		$remote = $this->remote;
+
+		$output = [];
+		exec("git rev-list --count $branch", $output);
+		$count = (int)($output[0] ?? 0);
+
+		$new = [];
+		exec("git log $remote/$branch..$branch --format=%h", $new);
+
+		$commits = [];
+		$skip = ($page - 1) * $limit;
+		exec("git log $branch --pretty=format:\"%h|%an|%ae|%ad|%s\" --skip=$skip --max-count=$limit", $commits);
+
+		foreach ($commits as $i => $str) {
+			$data = str_getcsv($str, '|');
+			$hash = $data[0];
+
+			$commits[$i] = [
+				'new' => in_array($hash, $new) !== false,
+				'hash' => $hash,
+				'name' => $data[1],
+				'email' => $data[2],
+				'date' => $data[3],
+				'subject' => $data[4]
+			];
+		}
+
+		return [
+			'total' => $count,
+			'new' => count($new),
+			'commits' => $commits
+		];
 	}
 }

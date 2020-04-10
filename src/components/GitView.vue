@@ -39,7 +39,10 @@
 			</k-column>
 
 			<k-column width="1/3">
-				<k-headline>Commits</k-headline>
+				<commits-list
+					:data="logData"
+					@paginate="paginateLog"
+				></commits-list>
 			</k-column>
 		</k-grid>
 
@@ -48,10 +51,12 @@
 
 <script>
 import ChangesList from './ChangesList.vue'
+import CommitsList from './CommitsList.vue'
 
 export default {
 	components: {
-		ChangesList
+		ChangesList,
+		CommitsList
 	},
 	data () {
 		return {
@@ -59,11 +64,13 @@ export default {
 			unstaged: [],
 			commitData: {
 				message: null
-			}
+			},
+			logData: null,
+			logPgn: null
 		}
 	},
 	created () {
-		this.$api.get('git/status').then((entries) => {
+		this.$api.get('git/status').then(entries => {
 			this.updateStatus(entries)
 		})
 	},
@@ -100,9 +107,25 @@ export default {
 				this.$refs.commitDialog.close()
 				return this.$api.get('git/status')
 			}).then(entries => {
+				this.commitData.message = null
 				this.updateStatus(entries)
 			}).catch(error => {
 				this.$refs.commitDialog.error(error.message)
+			}).then(() => {
+				this.listCommits()
+			})
+		},
+		paginateLog (data) {
+			this.logPgn = {
+				page: data.page,
+				limit: data.limit
+			}
+
+			this.listCommits()
+		},
+		listCommits (data) {
+			this.$api.get('git/log', this.logPgn).then(data => {
+				this.logData = data
 			})
 		}
 	}
