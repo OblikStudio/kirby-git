@@ -76,7 +76,7 @@ export default {
 	created () {
 		this.$api.get('git/status').then(entries => {
 			this.updateStatus(entries)
-		}).catch (error => {
+		}).catch(error => {
 			this.$store.dispatch('notification/error', error)
 		})
 	},

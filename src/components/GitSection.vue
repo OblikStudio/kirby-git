@@ -24,6 +24,13 @@
 </template>
 
 <script>
+let updateEvents = [
+	'site.changeTitle',
+	'page.changeTitle',
+	'page.changeStatus',
+	'model.update'
+]
+
 function getStats () {
 	return {
 		total: 0,
@@ -34,7 +41,6 @@ function getStats () {
 		deleted: 0
 	}
 }
-
 export default {
 	data: () => {
 		return {
@@ -117,7 +123,16 @@ export default {
 	created () {
 		this.load().then((response) => {
 			this.headline = response.headline
+			this.status()
+		})
 
+		this.$events.$on(updateEvents, this.status)
+	},
+	destroyed () {
+		this.$events.$off(updateEvents, this.status)
+	},
+	methods: {
+		status () {
 			this.$api.get('git/status').then((entries) => {
 				this.stats = getStats()
 
@@ -125,9 +140,7 @@ export default {
 					this.updateStats(entries)
 				}
 			})
-		})
-	},
-	methods: {
+		},
 		updateStats (entries) {
 			this.stats.total = entries.length
 
