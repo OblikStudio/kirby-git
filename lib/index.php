@@ -10,7 +10,7 @@ load([
 
 return [
 	'options' => [
-		'repo' => getcwd(),
+		'repo' => kirby()->root('index'),
 		'branch' => 'master',
 		'remote' => 'origin',
 		'log' => false
