@@ -151,17 +151,17 @@ export default {
 </script>
 
 <style scoped>
->>> .k-icon-copy {
+section >>> .k-icon-copy {
 	background: var(--color-positive);
 	color: black;
 }
 
->>> .k-icon-edit {
+section >>> .k-icon-edit {
 	background: var(--color-notice);
 	color: black;
 }
 
->>> .k-icon-trash {
+section >>> .k-icon-trash {
 	background: var(--color-negative);
 	color: black;
 }

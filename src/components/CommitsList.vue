@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style scoped>
->>> .k-icon-upload {
+section >>> .k-icon-upload {
 	background: var(--color-positive);
 	color: black;
 }
