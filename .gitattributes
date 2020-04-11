@@ -4,6 +4,7 @@ site export-ignore
 src export-ignore
 
 .gitignore export-ignore
+.gitattributes export-ignore
 .editorconfig export-ignore
 .htaccess export-ignore
 package.json export-ignore
