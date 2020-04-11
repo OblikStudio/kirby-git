@@ -3,6 +3,9 @@
 
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
+			<k-button-group v-if="list.length">
+				<k-button icon="share" :link="link">Open</k-button>
+			</k-button-group>
 		</header>
 
 		<k-list v-if="list.length">
@@ -48,6 +51,9 @@ export default {
 			}
 
 			return text
+		},
+		link () {
+			return window.panel.plugins.views.git.link
 		},
 		positiveStatus () {
 			let text = []
