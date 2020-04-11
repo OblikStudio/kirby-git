@@ -14,9 +14,5 @@ composer.phar
 # Parcel
 /.cache
 
-# Artifacts
-/index.css
-/index.js
-
 # Test repo
 /repo

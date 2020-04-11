@@ -1,5 +1,20 @@
 {
-    "require": {
-        "getkirby/cms": "^3.3"
+  "name": "oblik/kirby-git",
+  "description": "Shows you Git changes in the Kirby panel and allows you to add/commit/push them, manually or automatically.",
+  "type": "kirby-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hristiyan Dodov",
+      "email": "h.dodov@gmail.com",
+      "homepage": "https://dodov.me/"
     }
+  ],
+  "require": {
+    "getkirby/cms": "^3.3",
+    "getkirby/composer-installer": "^1.1"
+  },
+  "extra": {
+    "installer-name": "git"
+  }
 }

@@ -1,0 +1,10 @@
+content export-ignore
+docs export-ignore
+site export-ignore
+src export-ignore
+
+.gitignore export-ignore
+.editorconfig export-ignore
+.htaccess export-ignore
+package.json export-ignore
+yarn.lock export-ignore
