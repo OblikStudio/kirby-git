@@ -4,11 +4,18 @@ namespace Oblik\KirbyGit;
 
 use Exception;
 
+require_once 'util.php';
+
 load([
 	'Oblik\\KirbyGit\\Git' => 'Git.php'
 ], __DIR__);
 
 return [
+	'options' => [
+		'repo' => getcwd(),
+		'branch' => 'master',
+		'remote' => 'origin'
+	],
 	'sections' => [
 		'git' => [
 			'props' => [

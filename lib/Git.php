@@ -4,46 +4,50 @@ namespace Oblik\KirbyGit;
 
 use Exception;
 
-function array_filter_recursive($input)
-{
-	foreach ($input as &$value) {
-		if (is_array($value)) {
-			$value = array_filter_recursive($value);
-		}
-	}
-
-	return array_filter($input);
-}
-
 class Git
 {
-	public $repo = null;
-	public $branch = null;
-	public $remote = null;
+	protected $config;
 
-	public function __construct()
+	/**
+	 * Absolute path to a Git repository.
+	 */
+	protected $repo;
+
+	/**
+	 * Branch used when displaying commit logs or pushing.
+	 */
+	protected $branch;
+
+	/**
+	 * Remote used when comparing commits or pushing.
+	 */
+	protected $remote;
+
+	public function __construct(array $config = [])
 	{
-		$repo = option('oblik.git.repo') ?? getcwd();
-
-		$this->repo = realpath($repo);
-		$this->branch = option('oblik.git.branch');
-		$this->remote = option('oblik.git.remote');
+		$this->config = $config;
+		$this->repo = realpath($this->option('repo'));
 
 		if ($this->repo === false) {
 			throw new Exception('Inavlid repo path');
 		}
 
-		if (getcwd() !== $this->repo) {
-			chdir($this->repo);
-		}
+		$this->branch = $this->option('branch');
+		$this->remote = $this->option('remote');
+	}
+
+	public function option(string $name)
+	{
+		return ($this->config[$name] ?? null) ?? (option("oblik.git.$name") ?? null);
 	}
 
 	public function exec(string $command, array $params = [])
 	{
 		$code = null;
 		$output = [];
+		$repo = $this->repo;
 
-		$cmd = 'git';
+		$cmd = "git -C $repo";
 
 		if ($name = $params['name'] ?? null) {
 			$cmd .= " -c user.name=$name";
@@ -98,10 +102,6 @@ class Git
 
 	public function commit(string $name, string $email, string $message)
 	{
-		if (count($this->exec('commit --dry-run --porcelain')) === 0) {
-			throw new Exception('Nothing to commit');
-		}
-
 		$message = escapeshellarg($message);
 
 		return $this->exec("commit --message=$message --no-status", [
