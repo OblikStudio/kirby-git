@@ -76,7 +76,7 @@ class Git
 		return $output;
 	}
 
-	public function commit(string $author, string $message)
+	public function commit(string $name, string $email, string $message)
 	{
 		$output = [];
 
@@ -87,10 +87,11 @@ class Git
 		}
 
 		$output = [];
-		$author = escapeshellarg($author);
+		$name = escapeshellarg($name);
+		$email = escapeshellarg($email);
 		$message = escapeshellarg($message);
 
-		exec("git commit --message=$message --author=$author --no-status", $output);
+		exec("git -c user.name=$name -c user.email=$email commit --message=$message --no-status", $output);
 
 		return $output;
 	}

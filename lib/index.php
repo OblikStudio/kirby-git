@@ -40,15 +40,13 @@ return [
 					$committer = kirby()->user();
 					$name = $committer->name()->value() ?? 'Kirby Git';
 					$email = $committer->email() ?? 'hello@oblik.studio';
-
-					$author = $name . ' <' . $email . '>';
 					$message = kirby()->request()->data()['message'] ?? null;
 
 					if (empty($message)) {
 						throw new Exception('No commit message');
 					}
 
-					return (new Git)->commit($author, $message);
+					return (new Git)->commit($name, $email, $message);
 				}
 			],
 			[
