@@ -20,11 +20,7 @@ function hook(string $name)
 {
 	return function ($input) use ($name) {
 		$git = new Git();
-
 		$message = $name;
-		$committer = kirby()->user();
-		$name = $committer->name()->value();
-		$email = $committer->email();
 
 		if (is_a($input, Model::class)) {
 			$message .= ' ' . $input->id();
@@ -32,7 +28,7 @@ function hook(string $name)
 
 		try {
 			$git->add();
-			$git->commit($name, $email, $message);
+			$git->commit($message);
 		} catch (Exception $e) {}
 	};
 }

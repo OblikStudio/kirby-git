@@ -2,8 +2,6 @@
 
 namespace Oblik\KirbyGit;
 
-use Exception;
-
 require_once 'util.php';
 
 load([
@@ -30,6 +28,7 @@ return [
 		'routes' => [
 			[
 				'pattern' => 'git/status',
+				'method' => 'get',
 				'action' => function () {
 					return (new Git)->status();
 				}
@@ -45,16 +44,10 @@ return [
 				'pattern' => 'git/commit',
 				'method' => 'post',
 				'action' => function () {
-					$committer = kirby()->user();
-					$name = $committer->name()->value() ?? 'Kirby Git';
-					$email = $committer->email() ?? 'hello@oblik.studio';
-					$message = kirby()->request()->data()['message'] ?? null;
+					$data = kirby()->request()->data();
+					$message = $data['message'] ?? null;
 
-					if (empty($message)) {
-						throw new Exception('No commit message');
-					}
-
-					return (new Git)->commit($name, $email, $message);
+					return (new Git)->commit($message);
 				}
 			],
 			[
@@ -62,7 +55,10 @@ return [
 				'method' => 'get',
 				'action' => function () {
 					$data = kirby()->request()->data();
-					return (new Git)->log($data['page'], $data['limit']);
+					$page = (int) ($data['page'] ?? 1);
+					$limit = (int) ($data['limit'] ?? 50);
+
+					return (new Git)->log($page, $limit);
 				}
 			],
 			[

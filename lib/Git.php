@@ -47,23 +47,13 @@ class Git
 		return ($this->config[$name] ?? null) ?? (option("oblik.git.$name") ?? null);
 	}
 
-	public function exec(string $command, array $params = [])
+	public function exec(string $command)
 	{
 		$code = null;
 		$output = [];
+
 		$repo = $this->repo;
-
-		$cmd = "git -C $repo";
-
-		if ($name = $params['name'] ?? null) {
-			$cmd .= " -c user.name=$name";
-		}
-
-		if ($email = $params['email'] ?? null) {
-			$cmd .= " -c user.email=$email";
-		}
-
-		$cmd .= " $command 2>&1";
+		$cmd = "git -C $repo $command 2>&1";
 
 		if ($this->logfile) {
 			file_put_contents($this->logfile, $cmd . PHP_EOL, FILE_APPEND);
@@ -110,14 +100,22 @@ class Git
 		return $this->exec('add . --verbose');
 	}
 
-	public function commit(string $name, string $email, string $message)
+	public function commit($message)
 	{
-		$message = escapeshellarg($message);
+		$committer = kirby()->user();
+		$name = $committer->name()->value();
+		$email = $committer->email();
 
-		return $this->exec("commit --message=$message --no-status", [
-			'name' => escapeshellarg($name),
-			'email' => escapeshellarg($email)
-		]);
+		if (empty($name) || empty($email)) {
+			$name = 'Kirby Git';
+			$email = 'hello@oblik.studio';
+		}
+
+		$message = escapeshellarg($message);
+		$name = escapeshellarg($name);
+		$email = escapeshellarg($email);
+
+		return $this->exec("-c user.name=$name -c user.email=$email commit --message=$message --no-status");
 	}
 
 	public function log(int $page, int $limit)
