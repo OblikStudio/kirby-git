@@ -73,5 +73,6 @@ return [
 				}
 			]
 		]
-	]
+	],
+	'hooks' => require 'hooks.php'
 ];
