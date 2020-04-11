@@ -23,6 +23,11 @@ class Git
 	 */
 	protected $remote;
 
+	/**
+	 * File where each executed command is logged.
+	 */
+	protected $logfile;
+
 	public function __construct(array $config = [])
 	{
 		$this->config = $config;
@@ -34,6 +39,7 @@ class Git
 
 		$this->branch = $this->option('branch');
 		$this->remote = $this->option('remote');
+		$this->logfile = $this->option('log');
 	}
 
 	public function option(string $name)
@@ -59,10 +65,14 @@ class Git
 
 		$cmd .= " $command 2>&1";
 
+		if ($this->logfile) {
+			file_put_contents($this->logfile, $cmd . PHP_EOL, FILE_APPEND);
+		}
+
 		exec($cmd, $output, $code);
 
 		if ($code !== 0) {
-			throw new Exception(implode("\n", $output));
+			throw new Exception(implode(PHP_EOL, $output));
 		}
 
 		return $output;

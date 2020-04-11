@@ -14,7 +14,8 @@ return [
 	'options' => [
 		'repo' => getcwd(),
 		'branch' => 'master',
-		'remote' => 'origin'
+		'remote' => 'origin',
+		'log' => false
 	],
 	'sections' => [
 		'git' => [
