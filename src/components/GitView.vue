@@ -39,10 +39,22 @@
 			</k-column>
 
 			<k-column width="1/3">
-				<commits-list
-					:data="logData"
-					@paginate="paginateLog"
-				></commits-list>
+				<commits-list :data="logData" @paginate="paginateLog">
+					<k-button-group v-if="logData && logData.new" slot="action">
+						<k-button :disabled="isPushing" icon="upload" @click="$refs.pushDialog.open()">
+							{{ isPushing ? 'Pushing…' : 'Push' }}
+						</k-button>
+					</k-button-group>
+				</commits-list>
+
+				<k-dialog
+					v-if="logData"
+					ref="pushDialog"
+					theme="positive"
+					@submit="push"
+				>
+					<k-text>Push {{ logData.new }} commits to the remote repository?</k-text>
+				</k-dialog>
 			</k-column>
 		</k-grid>
 
@@ -66,7 +78,8 @@ export default {
 				message: null
 			},
 			logData: null,
-			logPgn: null
+			logPgn: null,
+			isPushing: false
 		}
 	},
 	created () {
@@ -123,9 +136,21 @@ export default {
 
 			this.listCommits()
 		},
-		listCommits (data) {
-			this.$api.get('git/log', this.logPgn).then(data => {
+		listCommits () {
+			return this.$api.get('git/log', this.logPgn).then(data => {
 				this.logData = data
+			})
+		},
+		push () {
+			this.isPushing = true
+			this.$refs.pushDialog.close()
+
+			this.$api.post('git/push').then(() => {
+				return this.listCommits()
+			}).catch (error => {
+				this.$store.dispatch('notification/error', error)
+			}).then(() => {
+				this.isPushing = false
 			})
 		}
 	}

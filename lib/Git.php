@@ -42,7 +42,7 @@ class Git
 	{
 		$output = [];
 
-		exec('git status -u --porcelain 2>&1', $output);
+		exec('git status -u --porcelain', $output);
 
 		$data = array_map(function ($line) {
 			$matches = null;
@@ -71,7 +71,7 @@ class Git
 	{
 		$output = [];
 
-		exec('git add . --verbose 2>&1', $output);
+		exec('git add . --verbose', $output);
 
 		return $output;
 	}
@@ -130,5 +130,16 @@ class Git
 			'new' => count($new),
 			'commits' => $commits
 		];
+	}
+
+	public function push()
+	{
+		$branch = $this->branch;
+		$remote = $this->remote;
+		$output = [];
+
+		exec("git push $remote $branch 2>&1", $output);
+
+		return $output;
 	}
 }

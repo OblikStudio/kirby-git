@@ -58,6 +58,13 @@ return [
 					$data = kirby()->request()->data();
 					return (new Git)->log($data['page'], $data['limit']);
 				}
+			],
+			[
+				'pattern' => 'git/push',
+				'method' => 'post',
+				'action' => function () {
+					return (new Git)->push();
+				}
 			]
 		]
 	]

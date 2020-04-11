@@ -2,6 +2,7 @@
 	<section>
 		<header class="k-section-header">
 			<k-headline>Commits</k-headline>
+			<slot name="action"></slot>
 		</header>
 
 		<k-list v-if="data && commits.length">
@@ -64,7 +65,7 @@ export default {
 </script>
 
 <style scoped>
-section >>> .k-icon-upload {
+.k-list-item >>> .k-icon-upload {
 	background: var(--color-positive);
 	color: black;
 }
