@@ -11,7 +11,6 @@
 				:key="entry.file"
 				:text="entry.file"
 				:icon="{ type: entry.icon }"
-				:class="{ [`ob-theme-${ entry.icon }`]: true }"
 			></k-list-item>
 		</k-list>
 		<template v-else>
@@ -104,17 +103,20 @@ export default {
 };
 </script>
 
-<style>
-.ob-theme-copy .k-list-item-image {
+<style scoped>
+>>> .k-icon-copy {
 	background: var(--color-positive);
+	color: black;
 }
 
-.ob-theme-edit .k-list-item-image,
-.ob-theme-refresh .k-list-item-image {
+>>> .k-icon-edit,
+>>> .k-icon-refresh {
 	background: var(--color-notice);
+	color: black;
 }
 
-.ob-theme-trash .k-list-item-image {
+>>> .k-icon-trash {
 	background: var(--color-negative);
+	color: black;
 }
 </style>

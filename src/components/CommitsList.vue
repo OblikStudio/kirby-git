@@ -13,6 +13,9 @@
 				:icon="{ type: commit.icon, back: 'black' }"
 			></k-list-item>
 		</k-list>
+		<template v-else>
+			<k-empty icon="circle-filled">No commits</k-empty>
+		</template>
 
 		<k-pagination
 			v-if="data"
@@ -59,3 +62,10 @@ export default {
 	}
 }
 </script>
+
+<style scoped>
+>>> .k-icon-upload {
+	background: var(--color-positive);
+	color: black;
+}
+</style>
