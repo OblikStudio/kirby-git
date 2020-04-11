@@ -1,5 +1,1 @@
-title: Default Page
-preset: page
-fields:
-  text:
-    type: textarea
+extends: layouts/test

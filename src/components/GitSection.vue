@@ -41,6 +41,7 @@ function getStats () {
 		deleted: 0
 	}
 }
+
 export default {
 	data: () => {
 		return {

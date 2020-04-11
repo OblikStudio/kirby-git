@@ -1,0 +1,13 @@
+columns:
+  git:
+    width: 1/3
+    sections:
+      git: true
+  pages:
+    width: 1/3
+    sections:
+      pages: true
+  files:
+    width: 1/3
+    sections:
+      files: true

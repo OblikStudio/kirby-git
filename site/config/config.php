@@ -2,9 +2,5 @@
 
 return [
 	'debug' => true,
-	'oblik.git' => [
-		'repo' => getcwd() . '/repo',
-		'branch' => 'master',
-		'remote' => 'origin'
-	]
+	'oblik.git.repo' => getcwd() . '/repo'
 ];
