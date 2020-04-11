@@ -38,11 +38,35 @@ class Git
 		}
 	}
 
-	public function status()
+	public function exec(string $command, array $params = [])
 	{
+		$code = null;
 		$output = [];
 
-		exec('git status -u --porcelain', $output);
+		$cmd = 'git';
+
+		if ($name = $params['name'] ?? null) {
+			$cmd .= " -c user.name=$name";
+		}
+
+		if ($email = $params['email'] ?? null) {
+			$cmd .= " -c user.email=$email";
+		}
+
+		$cmd .= " $command 2>&1";
+
+		exec($cmd, $output, $code);
+
+		if ($code !== 0) {
+			throw new Exception(implode("\n", $output));
+		}
+
+		return $output;
+	}
+
+	public function status()
+	{
+		$output = $this->exec('status -u --porcelain');
 
 		$data = array_map(function ($line) {
 			$matches = null;
@@ -69,31 +93,21 @@ class Git
 
 	public function add()
 	{
-		$output = [];
-
-		exec('git add . --verbose', $output);
-
-		return $output;
+		return $this->exec('add . --verbose');
 	}
 
 	public function commit(string $name, string $email, string $message)
 	{
-		$output = [];
-
-		exec('git commit --dry-run --porcelain', $output);
-
-		if (count($output) === 0) {
+		if (count($this->exec('commit --dry-run --porcelain')) === 0) {
 			throw new Exception('Nothing to commit');
 		}
 
-		$output = [];
-		$name = escapeshellarg($name);
-		$email = escapeshellarg($email);
 		$message = escapeshellarg($message);
 
-		exec("git -c user.name=$name -c user.email=$email commit --message=$message --no-status", $output);
-
-		return $output;
+		return $this->exec("commit --message=$message --no-status", [
+			'name' => escapeshellarg($name),
+			'email' => escapeshellarg($email)
+		]);
 	}
 
 	public function log(int $page, int $limit)
@@ -101,16 +115,15 @@ class Git
 		$branch = $this->branch;
 		$remote = $this->remote;
 
-		$output = [];
-		exec("git rev-list --count $branch", $output);
-		$count = (int)($output[0] ?? 0);
+		$list = $this->exec("rev-list --count $branch");
+		$count = (int) ($list[0] ?? 0);
 
-		$new = [];
-		exec("git log $remote/$branch..$branch --format=%h", $new);
+		$new = $this->exec("log $remote/$branch..$branch --format=%h");
 
-		$commits = [];
-		$skip = ($page - 1) * $limit;
-		exec("git log $branch --pretty=format:\"%h|%an|%ae|%ad|%s\" --skip=$skip --max-count=$limit", $commits);
+		$format = '"%h|%an|%ae|%ad|%s"';
+		$skip = escapeshellarg(($page - 1) * $limit);
+		$limit = escapeshellarg($limit);
+		$commits = $this->exec("log $branch --pretty=format:$format --skip=$skip --max-count=$limit");
 
 		foreach ($commits as $i => $str) {
 			$data = str_getcsv($str, '|');
@@ -137,10 +150,7 @@ class Git
 	{
 		$branch = $this->branch;
 		$remote = $this->remote;
-		$output = [];
 
-		exec("git push $remote $branch 2>&1", $output);
-
-		return $output;
+		return $this->exec("push $remote $branch");
 	}
 }
