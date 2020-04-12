@@ -9,14 +9,19 @@ class Git
 	protected $config;
 
 	/**
-	 * Absolute path to a Git repository.
+	 * Absolute path to a Git repo.
 	 */
 	protected $repo;
 
 	/**
-	 * Branch used when displaying commit logs or pushing.
+	 * The currently checked out branch in the repo.
 	 */
-	protected $branch;
+	protected $branchCurrent;
+
+	/**
+	 * Branch used to merge in a fast-forward-only fashion.
+	 */
+	protected $branchMerge;
 
 	/**
 	 * Remote used when comparing commits or pushing.
@@ -37,7 +42,13 @@ class Git
 			throw new Exception('Inavlid repo path');
 		}
 
-		$this->branch = $this->option('branch');
+		$this->branchCurrent = $this->branch();
+
+		if (empty($this->branchCurrent)) {
+			throw new Exception('No checked out branch');
+		}
+
+		$this->branchMerge = $this->option('merge');
 		$this->remote = $this->option('remote');
 		$this->logfile = $this->option('log');
 	}
@@ -51,9 +62,7 @@ class Git
 	{
 		$code = null;
 		$output = [];
-
-		$repo = $this->repo;
-		$cmd = "git -C $repo $command 2>&1";
+		$cmd = "git -C {$this->repo} {$command} 2>&1";
 
 		if ($this->logfile) {
 			file_put_contents($this->logfile, $cmd . PHP_EOL, FILE_APPEND);
@@ -66,6 +75,11 @@ class Git
 		}
 
 		return $output;
+	}
+
+	public function branch()
+	{
+		return $this->exec('branch --show-current')[0] ?? null;
 	}
 
 	public function status()
@@ -115,23 +129,20 @@ class Git
 		$name = escapeshellarg($name);
 		$email = escapeshellarg($email);
 
-		return $this->exec("-c user.name=$name -c user.email=$email commit --message=$message --no-status");
+		return $this->exec("-c user.name={$name} -c user.email={$email} commit --message={$message} --no-status");
 	}
 
 	public function log(int $page, int $limit)
 	{
-		$branch = $this->branch;
-		$remote = $this->remote;
-
-		$list = $this->exec("rev-list --count $branch");
+		$list = $this->exec("rev-list --count {$this->branchCurrent}");
 		$count = (int) ($list[0] ?? 0);
 
-		$new = $this->exec("log $remote/$branch..$branch --format=%h");
+		$new = $this->exec("log {$this->remote}/{$this->branchCurrent}..{$this->branchCurrent} --format=%h");
 
 		$format = '"%h|%an|%ae|%ad|%s"';
 		$skip = escapeshellarg(($page - 1) * $limit);
 		$limit = escapeshellarg($limit);
-		$commits = $this->exec("log $branch --pretty=format:$format --skip=$skip --max-count=$limit");
+		$commits = $this->exec("log {$this->branchCurrent} --pretty=format:{$format} --skip={$skip} --max-count={$limit}");
 
 		foreach ($commits as $i => $str) {
 			$data = str_getcsv($str, '|');
@@ -156,9 +167,11 @@ class Git
 
 	public function push()
 	{
-		$branch = $this->branch;
-		$remote = $this->remote;
+		return $this->exec("push {$this->remote} {$this->branchCurrent}");
+	}
 
-		return $this->exec("push $remote $branch");
+	public function pull()
+	{
+		return $this->exec("pull {$this->remote} {$this->branchMerge} --ff-only");
 	}
 }

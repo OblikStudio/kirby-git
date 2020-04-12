@@ -40,8 +40,21 @@
 
 			<k-column width="1/3">
 				<commits-list :data="logData" @paginate="paginateLog">
-					<k-button-group v-if="logData && logData.new" slot="action">
-						<k-button :disabled="isPushing" icon="upload" @click="push">
+					<k-button-group slot="action">
+						<k-button
+							icon="download"
+							:disabled="!canPull"
+							@click="pull"
+						>
+							{{ isPulling ? 'Pulling…' : 'Pull' }}
+						</k-button>
+
+						<k-button
+							icon="upload"
+							theme="positive"
+							:disabled="!canPush"
+							@click="push"
+						>
 							{{ isPushing ? 'Pushing…' : 'Push' }}
 						</k-button>
 					</k-button-group>
@@ -70,7 +83,16 @@ export default {
 			},
 			logData: null,
 			logPgn: null,
+			isPulling: false,
 			isPushing: false
+		}
+	},
+	computed: {
+		canPull () {
+			return !this.isPushing && !this.isPulling
+		},
+		canPush () {
+			return !this.isPushing && !this.isPulling && this.logData?.new
 		}
 	},
 	created () {
@@ -143,6 +165,17 @@ export default {
 				this.$store.dispatch('notification/error', error)
 			}).then(() => {
 				this.isPushing = false
+			})
+		},
+		pull () {
+			this.isPulling = true
+
+			this.$api.get('git/pull').then(() => {
+				return this.listCommits()
+			}).catch (error => {
+				this.$store.dispatch('notification/error', error)
+			}).then(() => {
+				this.isPulling = false
 			})
 		}
 	}

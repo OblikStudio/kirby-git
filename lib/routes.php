@@ -44,5 +44,12 @@ return [
 		'action' => function () {
 			return (new Git)->push();
 		}
+	],
+	[
+		'pattern' => 'git/pull',
+		'method' => 'get',
+		'action' => function () {
+			return (new Git)->pull();
+		}
 	]
 ];
