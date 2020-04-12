@@ -14,16 +14,37 @@ composer require oblik/kirby-git
 
 # Usage
 
-The plugin expects a repo to already be initialized and set up. You just give a path to that repo, a branch, and a remote.
+In order to work successfully with this plugin (and Git in general), you need separate branches in order to avoid overwriting history.
+
+Let's say your repository is hosted on GitHub. This means you have a remote called `origin` and it points to that GitHub repo. Example setup:
+
+- `live` is the branch that is checked out on the live server. Content changes are pushed to `origin/live` from the panel via this plugin. You should **never** push to `origin/live` by other means. This would allow editors to always be able to commit and push new changes.
+- `dev` is the branch where you do development work locally on your machine. You can freely make both site changes _and_ content changes and push them to `origin/dev` for other developers to pull.
+- `master` is where you merge the other two branches. You pull content changes from `origin/live`, merge them with your local changes on `dev`, resolve conflicts _locally_, and push to `origin/master`.
+
+Whenever someone in the panel issues a pull, the `origin/master` branch will be fetched and merged with the local `live` on the server **if, and only if** a [fast-forward](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---ff-only) merge is possible. This means that if there are changes on `live` that are not reflected on `origin/master`, the merge will fail.
+
+Example flow:
+
+1. You push C1 (commit 1) and C2 from your `dev` to `origin/dev`
+1. Editors push C3 and C4 from `live` to `origin/live`
+1. You pull C3 and C4 from `origin/live` to your local `live`
+1. You merge your `master` with your `dev` and your `live`, resulting in a merge commit C5
+1. Your `master` now has all C1, C2, C3, and C4 and you push it to `origin/master`
+1. Editors will be able to pull `origin/master` and fast-forward to C5, which has your C1 and C2
+
+If editors created a new commit C6 on their `live` **before** merging with `origin/master`, the merge would have failed because C6 does not yet exist on `origin/master`. So they push C6 to `origin/live`, you pull it, merge it with `master`, and push it to `origin/master`. After that, editors would be able to pull.
 
 ## Config
+
+The plugin expects a repo to already be initialized and set up. You just give a path to that repo and check out the branch it should use.
 
 Options for the plugin are specified with dot notation in `site/config/config.php`. For example:
 
 ```php
 return [
     'oblik.git.repo' => '/path/to/repo',
-    'oblik.git.branch' => 'master',
+    'oblik.git.merge' => 'master',
     ...
 ];
 ```
@@ -34,17 +55,17 @@ Path to a folder containing a Git repo (a `.git` folder).
 
 **Default:** `kirby()->root('index')` (the project folder)
 
-### branch
-
-What branch to be used for showing commit logs. Setting it to `foo` means `git log` will compare the local branch `foo` with the remote branch `origin/foo`, if the remote is configured to be `origin`.
-
-**Default:** `master`
-
 ### remote
 
-What remote to use for `git log` and `git push`.
+What remote to use for pulling from and pushing to remote branches.
 
 **Default:** `origin`
+
+### merge
+
+What branch to be used for merging when issuing a pull.
+
+**Default:** `master`
 
 ### hooks
 

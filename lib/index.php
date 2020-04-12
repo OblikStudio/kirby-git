@@ -11,8 +11,8 @@ load([
 return [
 	'options' => [
 		'repo' => kirby()->root('index'),
-		'merge' => 'master',
 		'remote' => 'origin',
+		'merge' => 'master',
 		'log' => false
 	],
 	'sections' => [
