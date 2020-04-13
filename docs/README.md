@@ -12,6 +12,8 @@ With [Composer](https://packagist.org/packages/oblik/kirby-git):
 composer require oblik/kirby-git
 ```
 
+**Note:** This plugin requires Git version [`2.22.0`](https://github.com/git/git/releases/tag/v2.20.0) or above. Check how to update it on your server [here](https://unix.stackexchange.com/a/170831/405871).
+
 # Usage
 
 In order to work successfully with this plugin (and Git in general), you need separate branches in order to avoid overwriting history.
