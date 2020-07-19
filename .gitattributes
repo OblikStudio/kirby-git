@@ -7,5 +7,6 @@ src export-ignore
 .gitattributes export-ignore
 .editorconfig export-ignore
 .htaccess export-ignore
+index.site.php export-ignore
 package.json export-ignore
-yarn.lock export-ignore
+package-lock.json export-ignore

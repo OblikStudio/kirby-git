@@ -1,10 +1,27 @@
 <?php
 
+namespace Oblik\KirbyGit;
+
 use Kirby\Cms\App;
 
-if (class_exists('Kirby\Cms\App')) {
-	App::plugin('oblik/git', require 'lib/index.php');
-} else {
-	require_once 'kirby/bootstrap.php';
-	echo kirby()->render();
-}
+require_once 'lib/util.php';
+
+load([
+	'Oblik\\KirbyGit\\Git' => 'lib/Git.php'
+], __DIR__);
+
+App::plugin('oblik/git', [
+	'options' => [
+		'repo' => kirby()->root('index'),
+		'remote' => 'origin',
+		'merge' => 'master',
+		'log' => false
+	],
+	'sections' => [
+		'git' => require 'lib/section.php'
+	],
+	'api' => [
+		'routes' => require 'lib/routes.php'
+	],
+	'hooks' => require 'lib/hooks.php'
+]);
