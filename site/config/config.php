@@ -3,5 +3,5 @@
 return [
 	'debug' => true,
 	'api.csrf' => '',
-	'oblik.git.repo' => getcwd() . '/repo'
+	'oblik.git.repo' => getcwd() . '/content'
 ];

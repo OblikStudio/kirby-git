@@ -15,4 +15,4 @@ composer.phar
 /.cache
 
 # Test repo
-/repo
+/content
