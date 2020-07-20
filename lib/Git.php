@@ -86,9 +86,17 @@ class Git
 
 	public function deduceError(string $message)
 	{
-		if (strpos($message, 'usage: git ') !== false) {
+		if (
+			strpos($message, 'usage: git ') !== false ||
+			strpos($message, 'not a git command') !== false
+		) {
 			return 'It seems you have an outdated Git version: ' . $this->version();
-		} else if (strpos($message, 'Not possible to fast-forward') !== false) {
+		}
+
+		if (
+			strpos($message, 'Not possible to fast-forward') !== false ||
+			strpos($message, 'would be overwritten by merge') !== false
+		) {
 			return 'Refusing to pull remote changes because they’re not merged with the local changes.';
 		}
 	}
