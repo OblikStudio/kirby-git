@@ -71,10 +71,35 @@ class Git
 		exec($cmd, $output, $code);
 
 		if ($code !== 0) {
-			throw new Exception(implode(PHP_EOL, $output));
+			$message = implode(PHP_EOL, $output);
+			throw new Exception($this->deduceError($message) ?? $message);
 		}
 
 		return $output;
+	}
+
+	public function deduceError(string $message)
+	{
+		if (strpos($message, 'usage: git ') !== false) {
+			return 'It seems you have an outdated Git version: ' . $this->version();
+		} else if (strpos($message, 'Not possible to fast-forward') !== false) {
+			return 'Refusing to pull remote changes because they’re not merged with the local changes.';
+		}
+	}
+
+	public function version()
+	{
+		$version = null;
+
+		try {
+			$output = [];
+			exec('git --version', $output);
+			$version = implode('', $output);
+		} catch (Exception $e) {
+			$version = 'unknown';
+		}
+
+		return $version;
 	}
 
 	public function branch()
