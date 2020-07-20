@@ -12,6 +12,7 @@ load([
 
 App::plugin('oblik/git', [
 	'options' => [
+		'bin' => 'git',
 		'repo' => kirby()->root('index'),
 		'remote' => 'origin',
 		'merge' => 'master',

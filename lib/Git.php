@@ -9,6 +9,11 @@ class Git
 	protected $config;
 
 	/**
+	 * Executable to run.
+	 */
+	protected $bin;
+
+	/**
 	 * Absolute path to a Git repo.
 	 */
 	protected $repo;
@@ -36,6 +41,7 @@ class Git
 	public function __construct(array $config = [])
 	{
 		$this->config = $config;
+		$this->bin = $this->option('bin');
 		$this->repo = realpath($this->option('repo'));
 
 		if ($this->repo === false) {
@@ -62,7 +68,7 @@ class Git
 	{
 		$code = null;
 		$output = [];
-		$cmd = "git -C {$this->repo} {$command} 2>&1";
+		$cmd = "{$this->bin} -C {$this->repo} {$command} 2>&1";
 
 		if ($this->logfile) {
 			file_put_contents($this->logfile, $cmd . PHP_EOL, FILE_APPEND);

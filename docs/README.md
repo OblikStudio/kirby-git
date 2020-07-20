@@ -51,6 +51,12 @@ return [
 ];
 ```
 
+### bin
+
+What executable to use. You might need to specify this option if there are multiple versions of Git on the machine.
+
+**Default:** `git`
+
 ### repo
 
 Path to a folder containing a Git repo (a `.git` folder).
