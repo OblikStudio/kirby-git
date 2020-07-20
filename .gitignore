@@ -14,5 +14,6 @@ composer.phar
 # Parcel
 /.cache
 
-# Test repo
+# Test repos
 /content
+/remote
