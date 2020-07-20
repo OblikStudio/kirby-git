@@ -13,7 +13,8 @@
 				v-for="entry in list"
 				:key="entry.icon"
 				:text="entry.text"
-				:icon="{ type: entry.icon }"
+				:icon="{ type: entry.icon, class: 'git-icon-change' }"
+				:image="true"
 			></k-list-item>
 		</k-list>
 		<template v-else>
@@ -169,20 +170,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-section >>> .k-icon-copy {
-	background: var(--color-positive);
-	color: black;
-}
-
-section >>> .k-icon-edit {
-	background: var(--color-notice);
-	color: black;
-}
-
-section >>> .k-icon-trash {
-	background: var(--color-negative);
-	color: black;
-}
-</style>

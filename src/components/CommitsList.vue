@@ -11,7 +11,8 @@
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
-				:icon="{ type: commit.icon, back: 'black' }"
+				:icon="{ type: commit.icon, class: 'git-icon-commit' }"
+				:image="true"
 			></k-list-item>
 		</k-list>
 		<template v-else>
@@ -64,8 +65,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.k-list-item >>> .k-icon-upload {
+<style>
+.git-icon-commit {
+	background: black;
+	color: white;
+}
+
+.git-icon-commit.k-icon-upload {
 	background: var(--color-positive);
 	color: black;
 }
