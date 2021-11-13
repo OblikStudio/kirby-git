@@ -11,7 +11,6 @@
 				:key="entry.file"
 				:text="entry.file"
 				:image="{ back: 'none', icon: entry.icon }"
-				:layout="list"
 			></k-item>
 		</k-items>
 		<template v-else>

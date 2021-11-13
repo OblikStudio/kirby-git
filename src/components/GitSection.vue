@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="area-git-changes-list">
 
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
@@ -8,15 +8,14 @@
 			</k-button-group>
 		</header>
 
-		<k-list v-if="list.length">
-			<k-list-item
+		<k-items v-if="list.length" :layout="list">
+			<k-item
 				v-for="entry in list"
 				:key="entry.icon"
 				:text="entry.text"
-				:icon="{ type: entry.icon, class: 'git-icon-change' }"
-				:image="true"
-			></k-list-item>
-		</k-list>
+				:image="{ back: 'none', icon: entry.icon }"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>

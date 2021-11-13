@@ -5,15 +5,14 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-list v-if="data && commits.length">
+		<k-items v-if="data && commits.length" :layout="list">
 			<k-item
 				v-for="commit in commits"
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
-				:image="true"
 			></k-item>
-		</k-list>
+		</k-items>
 		<template v-else>
 			<k-empty icon="circle-filled">No commits</k-empty>
 		</template>
