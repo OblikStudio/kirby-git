@@ -1,68 +1,70 @@
 <template>
-	<k-view>
-		<k-header>Version Control</k-header>
+	<k-inside>
+		<k-view>
+			<k-header>Version Control</k-header>
 
-		<k-grid gutter="medium">
-			<k-column width="1/3">
-				<changes-list title="Unstaged" :data="this.unstaged">
-					<k-button-group v-if="this.unstaged.length" slot="action">
-						<k-button icon="add" @click="add">Add</k-button>
-					</k-button-group>
-				</changes-list>
-			</k-column>
+			<k-grid gutter="medium">
+				<k-column width="1/3">
+					<changes-list title="Unstaged" :data="this.unstaged">
+						<k-button-group v-if="this.unstaged.length" slot="action">
+							<k-button icon="add" @click="add">Add</k-button>
+						</k-button-group>
+					</changes-list>
+				</k-column>
 
-			<k-column width="1/3">
-				<changes-list title="Staged" :data="this.staged">
-					<k-button-group v-if="this.staged.length" slot="action">
-						<k-button icon="circle-filled" @click="$refs.commitDialog.open()">Commit</k-button>
-					</k-button-group>
-				</changes-list>
+				<k-column width="1/3">
+					<changes-list title="Staged" :data="this.staged">
+						<k-button-group v-if="this.staged.length" slot="action">
+							<k-button icon="circle-filled" @click="$refs.commitDialog.open()">Commit</k-button>
+						</k-button-group>
+					</changes-list>
 
-				<k-dialog
-					ref="commitDialog"
-					theme="positive"
-					@submit="$refs.commitForm.submit()"
-				>
-					<k-form
-						ref="commitForm"
-						v-model="commitData"
-						:fields="{
-							message: {
-								type: 'text',
-								label: 'Message',
-								required: true
-							}
-						}"
-						@submit="commit"
-					/>
-				</k-dialog>
-			</k-column>
+					<k-dialog
+						ref="commitDialog"
+						theme="positive"
+						@submit="$refs.commitForm.submit()"
+					>
+						<k-form
+							ref="commitForm"
+							v-model="commitData"
+							:fields="{
+								message: {
+									type: 'text',
+									label: 'Message',
+									required: true
+								}
+							}"
+							@submit="commit"
+						/>
+					</k-dialog>
+				</k-column>
 
-			<k-column width="1/3">
-				<commits-list :data="logData" @paginate="paginateLog">
-					<k-button-group slot="action">
-						<k-button
-							icon="download"
-							:disabled="!canPull"
-							@click="pull"
-						>
-							{{ isPulling ? 'Pulling…' : 'Pull' }}
-						</k-button>
+				<k-column width="1/3">
+					<commits-list :data="logData" @paginate="paginateLog">
+						<k-button-group slot="action">
+							<k-button
+								icon="download"
+								:disabled="!canPull"
+								@click="pull"
+							>
+								{{ isPulling ? 'Pulling…' : 'Pull' }}
+							</k-button>
 
-						<k-button
-							icon="upload"
-							theme="positive"
-							:disabled="!canPush"
-							@click="push"
-						>
-							{{ isPushing ? 'Pushing…' : 'Push' }}
-						</k-button>
-					</k-button-group>
-				</commits-list>
-			</k-column>
-		</k-grid>
+							<k-button
+								icon="upload"
+								theme="positive"
+								:disabled="!canPush"
+								@click="push"
+							>
+								{{ isPushing ? 'Pushing…' : 'Push' }}
+							</k-button>
+						</k-button-group>
+					</commits-list>
+				</k-column>
+			</k-grid>
 
-	</k-view>
+		</k-view>
+	</k-inside>
 </template>
 
 <script>

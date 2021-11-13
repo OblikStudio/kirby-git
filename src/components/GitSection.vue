@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="area-git-changes-list">
 
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
@@ -8,14 +8,14 @@
 			</k-button-group>
 		</header>
 
-		<k-list v-if="list.length">
-			<k-list-item
+		<k-items v-if="list.length" :layout="list">
+			<k-item
 				v-for="entry in list"
 				:key="entry.icon"
 				:text="entry.text"
-				:icon="{ type: entry.icon }"
-			></k-list-item>
-		</k-list>
+				:image="{ back: 'none', icon: entry.icon }"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
@@ -60,7 +60,7 @@ export default {
 			return text
 		},
 		link () {
-			return window.panel.plugins.views.git.link
+			return window.panel.$url('git').toString()
 		},
 		positiveStatus () {
 			let text = []
@@ -169,20 +169,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-section >>> .k-icon-copy {
-	background: var(--color-positive);
-	color: black;
-}
-
-section >>> .k-icon-edit {
-	background: var(--color-notice);
-	color: black;
-}
-
-section >>> .k-icon-trash {
-	background: var(--color-negative);
-	color: black;
-}
-</style>

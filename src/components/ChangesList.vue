@@ -1,18 +1,18 @@
 <template>
-	<section>
+	<section class="area-git-changes-list">
 		<header class="k-section-header">
 			<k-headline>{{ title }}</k-headline>
 			<slot name="action"></slot>
 		</header>
 
-		<k-list v-if="entries">
-			<k-list-item
+		<k-items v-if="entries" :layout="list">
+			<k-item
 				v-for="entry in entries"
 				:key="entry.file"
 				:text="entry.file"
-				:icon="{ type: entry.icon }"
-			></k-list-item>
-		</k-list>
+				:image="{ back: 'none', icon: entry.icon }"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
@@ -103,20 +103,23 @@ export default {
 };
 </script>
 
-<style scoped>
-section >>> .k-icon-copy {
-	background: var(--color-positive);
-	color: black;
-}
+<style lang="scss">
+.area-git-changes-list {
+	.k-icon {
+		color: var(--color-gray-900);
+	}
 
-section >>> .k-icon-edit,
-section >>> .k-icon-refresh {
-	background: var(--color-notice);
-	color: black;
-}
+	.k-icon-copy {
+		background: var(--color-positive);
+	}
 
-section >>> .k-icon-trash {
-	background: var(--color-negative);
-	color: black;
+	.k-icon-edit,
+	.k-icon-refresh {
+		background: var(--color-notice);
+	}
+
+	.k-icon-trash {
+		background: var(--color-negative);
+	}
 }
 </style>

@@ -9,6 +9,11 @@ class Git
 	protected $config;
 
 	/**
+	 * Executable to run.
+	 */
+	protected $bin;
+
+	/**
 	 * Absolute path to a Git repo.
 	 */
 	protected $repo;
@@ -36,6 +41,7 @@ class Git
 	public function __construct(array $config = [])
 	{
 		$this->config = $config;
+		$this->bin = $this->option('bin');
 		$this->repo = realpath($this->option('repo'));
 
 		if ($this->repo === false) {
@@ -55,14 +61,14 @@ class Git
 
 	public function option(string $name)
 	{
-		return ($this->config[$name] ?? null) ?? (option("oblik.git.$name") ?? null);
+		return $this->config[$name] ?? option("oblik.git.$name", null);
 	}
 
 	public function exec(string $command)
 	{
 		$code = null;
 		$output = [];
-		$cmd = "git -C {$this->repo} {$command} 2>&1";
+		$cmd = "{$this->bin} -C {$this->repo} {$command} 2>&1";
 
 		if ($this->logfile) {
 			file_put_contents($this->logfile, $cmd . PHP_EOL, FILE_APPEND);
@@ -71,10 +77,43 @@ class Git
 		exec($cmd, $output, $code);
 
 		if ($code !== 0) {
-			throw new Exception(implode(PHP_EOL, $output));
+			$message = implode(PHP_EOL, $output);
+			throw new Exception($this->deduceError($message) ?? $message);
 		}
 
 		return $output;
+	}
+
+	public function deduceError(string $message)
+	{
+		if (
+			strpos($message, 'usage: git ') !== false ||
+			strpos($message, 'not a git command') !== false
+		) {
+			return 'It seems you have an outdated Git version: ' . $this->version();
+		}
+
+		if (
+			strpos($message, 'Not possible to fast-forward') !== false ||
+			strpos($message, 'would be overwritten by merge') !== false
+		) {
+			return 'Refusing to pull remote changes because they’re not merged with the local changes.';
+		}
+	}
+
+	public function version()
+	{
+		$version = null;
+
+		try {
+			$output = [];
+			exec('git --version', $output);
+			$version = implode('', $output);
+		} catch (Exception $e) {
+			$version = 'unknown';
+		}
+
+		return $version;
 	}
 
 	public function branch()

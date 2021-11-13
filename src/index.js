@@ -5,11 +5,7 @@ panel.plugin('oblik/git', {
 	sections: {
 		git: GitSection
 	},
-	views: {
-		git: {
-			label: 'Git',
-			icon: 'box',
-			component: GitView
-		}
+	components: {
+		'k-git-view': GitView
 	}
 })

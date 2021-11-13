@@ -5,15 +5,14 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-list v-if="data && commits.length">
-			<k-list-item
+		<k-items v-if="data && commits.length" :layout="list">
+			<k-item
 				v-for="commit in commits"
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
-				:icon="{ type: commit.icon, back: 'black' }"
-			></k-list-item>
-		</k-list>
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="circle-filled">No commits</k-empty>
 		</template>
@@ -64,8 +63,13 @@ export default {
 }
 </script>
 
-<style scoped>
-.k-list-item >>> .k-icon-upload {
+<style>
+.git-icon-commit {
+	background: black;
+	color: white;
+}
+
+.git-icon-commit.k-icon-upload {
 	background: var(--color-positive);
 	color: black;
 }
