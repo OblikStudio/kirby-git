@@ -1,9 +1,10 @@
 [*]
 charset = utf-8
 end_of_line = lf
+indent_size = 4
+indent_style = tab
 
 [*.{html,php,css,scss,js,ts,vue}]
-indent_style = tab
 trim_trailing_whitespace = true
 insert_final_newline = true
 
@@ -12,6 +13,12 @@ indent_size = 2
 indent_style = space
 trim_trailing_whitespace = false
 
+[*.{js,vue}]
+quote_type = single
+ij_javascript_enforce_trailing_comma = remove
+ij_javascript_space_before_function_left_parenth = false
+ij_javascript_space_before_method_parentheses = true
+
 [*.md]
-indent_size = 4
+
 indent_style = space

@@ -1,15 +1,505 @@
-parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcelRequire,u="function"==typeof require&&require;function f(t,n){if(!r[t]){if(!e[t]){var i="function"==typeof parcelRequire&&parcelRequire;if(!n&&i)return i(t,!0);if(o)return o(t,!0);if(u&&"string"==typeof t)return u(t);var c=new Error("Cannot find module '"+t+"'");throw c.code="MODULE_NOT_FOUND",c}p.resolve=function(r){return e[t][1][r]||r},p.cache={};var l=r[t]=new f.Module(t);e[t][0].call(l.exports,p,l,l.exports,this)}return r[t].exports;function p(e){return f(p.resolve(e))}}f.isParcelRequire=!0,f.Module=function(e){this.id=e,this.bundle=f,this.exports={}},f.modules=e,f.cache=r,f.parent=o,f.register=function(r,t){e[r]=[function(e,r){r.exports=t},{}]};for(var c=0;c<t.length;c++)try{f(t[c])}catch(e){i||(i=e)}if(t.length){var l=f(t[t.length-1]);"object"==typeof exports&&"undefined"!=typeof module?module.exports=l:"function"==typeof define&&define.amd?define(function(){return l}):n&&(this[n]=l)}if(parcelRequire=f,i)throw i;return f}({"dzHx":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var t=["site.changeTitle","page.changeTitle","page.changeStatus","model.update"];function e(){return{total:0,added:0,untracked:0,modified:0,renamed:0,deleted:0}}var s={data:function(){return{headline:null,stats:e()}},computed:{finalHeadline:function(){var t=this.headline;return this.stats.total&&(t+=" (".concat(this.stats.total," changes)")),t},link:function(){return window.panel.plugins.views.git.link},positiveStatus:function(){var t=[];return this.stats.added&&t.push("".concat(this.stats.added," added")),this.stats.untracked&&t.push("".concat(this.stats.untracked," untracked")),t.length?t.join(", "):null},noticeStatus:function(){var t=[];return this.stats.modified&&t.push("".concat(this.stats.modified," modified")),this.stats.renamed&&t.push("".concat(this.stats.renamed," renamed")),t.length?t.join(", "):null},negativeStatus:function(){return this.stats.deleted?"".concat(this.stats.deleted," deleted"):null},list:function(){var t=[];return this.negativeStatus&&t.push({icon:"trash",text:this.negativeStatus}),this.noticeStatus&&t.push({icon:"edit",text:this.noticeStatus}),this.positiveStatus&&t.push({icon:"copy",text:this.positiveStatus}),t}},created:function(){var e=this;this.load().then(function(t){e.headline=t.headline,e.status()}),this.$events.$on(t,this.status)},destroyed:function(){this.$events.$off(t,this.status)},methods:{status:function(){var t=this;this.$api.get("git/status").then(function(s){t.stats=e(),s.length&&t.updateStats(s)})},updateStats:function(t){var e=this;this.stats.total=t.length,t.forEach(function(t){switch(t.staged||t.unstaged){case"A":e.stats.added++;break;case"?":e.stats.untracked++;break;case"M":e.stats.modified++;break;case"R":e.stats.renamed++;break;case"D":e.stats.deleted++}})}}};exports.default=s;
-(function(){var t=exports.default||module.exports;"function"==typeof t&&(t=t.options),Object.assign(t,{render:function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("section",[n("header",{staticClass:"k-section-header"},[n("k-headline",[t._v(t._s(t.finalHeadline))]),t._v(" "),t.list.length?n("k-button-group",[n("k-button",{attrs:{icon:"share",link:t.link}},[t._v("Open")])],1):t._e()],1),t._v(" "),t.list.length?n("k-list",t._l(t.list,function(t){return n("k-list-item",{key:t.icon,attrs:{text:t.text,icon:{type:t.icon,class:"git-icon-change"},image:!0}})}),1):[n("k-empty",{attrs:{icon:"check"}},[t._v("No changes")])]],2)},staticRenderFns:[],_compiled:!0,_scopeId:null,functional:void 0});})();
-},{}],"eFPo":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var e={props:{title:{type:String},data:{type:Array}},data:function(){return{perPage:15,pageIdx:0}},computed:{pages:function(){var e=this;return this.data.reduce(function(t,a,r){var s=Math.floor(r/e.perPage);return(t[s]||(t[s]=[])).push(a),t},[])},page:function(){return this.pages[this.pageIdx]||(this.pageIdx=0),this.pages[this.pageIdx]},entries:function(){var e=this;return this.page?this.page.map(function(t){return{file:t.file,mode:t.mode,icon:e.getIcon(t.mode)}}):null}},methods:{changePage:function(e){this.pageIdx=e.page-1},getIcon:function(e){var t="dots";switch(e){case"?":case"A":t="copy";break;case"M":t="edit";break;case"R":t="refresh";break;case"D":t="trash"}return t}}};exports.default=e;
-(function(){var e=exports.default||module.exports;"function"==typeof e&&(e=e.options),Object.assign(e,{render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("section",[n("header",{staticClass:"k-section-header"},[n("k-headline",[e._v(e._s(e.title))]),e._v(" "),e._t("action")],2),e._v(" "),e.entries?n("k-list",e._l(e.entries,function(e){return n("k-list-item",{key:e.file,attrs:{text:e.file,icon:{type:e.icon,class:"git-icon-change"},image:!0}})}),1):[n("k-empty",{attrs:{icon:"check"}},[e._v("No changes")])],e._v(" "),n("k-pagination",{attrs:{align:"center",details:!0,page:e.pageIdx+1,total:e.data.length,limit:e.perPage},on:{paginate:e.changePage}})],2)},staticRenderFns:[],_compiled:!0,_scopeId:null,functional:void 0});})();
-},{}],"Nhf5":[function(require,module,exports) {
-"use strict";function e(e,t){var r=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),r.push.apply(r,n)}return r}function t(t){for(var n=1;n<arguments.length;n++){var i=null!=arguments[n]?arguments[n]:{};n%2?e(Object(i),!0).forEach(function(e){r(t,e,i[e])}):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(i)):e(Object(i)).forEach(function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(i,e))})}return t}function r(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var n={props:{data:Object},data:function(){return{page:1,limit:15}},computed:{commits:function(){return this.data.commits.map(function(e){return t({},e,{icon:e.new?"upload":"circle-filled"})})}},created:function(){this.$emit("paginate",{page:this.page,limit:this.limit})}};exports.default=n;
-(function(){var t=exports.default||module.exports;"function"==typeof t&&(t=t.options),Object.assign(t,{render:function(){var t=this,e=t.$createElement,i=t._self._c||e;return i("section",[i("header",{staticClass:"k-section-header"},[i("k-headline",[t._v("Commits")]),t._v(" "),t._t("action")],2),t._v(" "),t.data&&t.commits.length?i("k-list",t._l(t.commits,function(t){return i("k-list-item",{key:t.hash,attrs:{text:t.subject,info:t.hash,icon:{type:t.icon,class:"git-icon-commit"},image:!0}})}),1):[i("k-empty",{attrs:{icon:"circle-filled"}},[t._v("No commits")])],t._v(" "),t.data?i("k-pagination",t._g({attrs:{align:"center",details:!0,page:t.page,total:t.data.total,limit:t.limit}},t.$listeners)):t._e()],2)},staticRenderFns:[],_compiled:!0,_scopeId:null,functional:void 0});})();
-},{}],"xUCk":[function(require,module,exports) {
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var t=n(require("./ChangesList.vue")),i=n(require("./CommitsList.vue"));function n(t){return t&&t.__esModule?t:{default:t}}var s={components:{ChangesList:t.default,CommitsList:i.default},data:function(){return{staged:[],unstaged:[],commitData:{message:null},logData:null,logPgn:null,isPulling:!1,isPushing:!1}},computed:{canPull:function(){return!this.isPushing&&!this.isPulling},canPush:function(){var t;return!this.isPushing&&!this.isPulling&&(null===(t=this.logData)||void 0===t?void 0:t.new)}},created:function(){var t=this;this.$api.get("git/status").then(function(i){t.updateStatus(i)}).catch(function(i){t.$store.dispatch("notification/error",i)})},methods:{updateStatus:function(t){var i=this;this.staged=[],this.unstaged=[],t.forEach(function(t){t.unstaged&&i.unstaged.push({file:t.file,mode:t.unstaged}),t.staged&&"?"!==t.staged&&i.staged.push({file:t.file,mode:t.staged})})},add:function(){var t=this;this.$api.post("git/add").then(function(){return t.$api.get("git/status")}).then(function(i){t.updateStatus(i)})},commit:function(){var t=this;this.$api.post("git/commit",this.commitData).then(function(){return t.$refs.commitDialog.close(),t.$api.get("git/status")}).then(function(i){t.commitData.message=null,t.updateStatus(i)}).catch(function(i){t.$refs.commitDialog.error(i.message)}).then(function(){t.listCommits()})},paginateLog:function(t){this.logPgn={page:t.page,limit:t.limit},this.listCommits()},listCommits:function(){var t=this;return this.$api.get("git/log",this.logPgn).then(function(i){t.logData=i})},push:function(){var t=this;this.isPushing=!0,this.$api.post("git/push").then(function(){return t.listCommits()}).catch(function(i){t.$store.dispatch("notification/error",i)}).then(function(){t.isPushing=!1})},pull:function(){var t=this;this.isPulling=!0,this.$api.get("git/pull").then(function(){return t.listCommits()}).catch(function(i){t.$store.dispatch("notification/error",i)}).then(function(){t.isPulling=!1})}}};exports.default=s;
-(function(){var t=exports.default||module.exports;"function"==typeof t&&(t=t.options),Object.assign(t,{render:function(){var t=this,o=t.$createElement,i=t._self._c||o;return i("k-view",[i("k-header",[t._v("Version Control")]),t._v(" "),i("k-grid",{attrs:{gutter:"medium"}},[i("k-column",{attrs:{width:"1/3"}},[i("changes-list",{attrs:{title:"Unstaged",data:this.unstaged}},[this.unstaged.length?i("k-button-group",{attrs:{slot:"action"},slot:"action"},[i("k-button",{attrs:{icon:"add"},on:{click:t.add}},[t._v("Add")])],1):t._e()],1)],1),t._v(" "),i("k-column",{attrs:{width:"1/3"}},[i("changes-list",{attrs:{title:"Staged",data:this.staged}},[this.staged.length?i("k-button-group",{attrs:{slot:"action"},slot:"action"},[i("k-button",{attrs:{icon:"circle-filled"},on:{click:function(o){return t.$refs.commitDialog.open()}}},[t._v("Commit")])],1):t._e()],1),t._v(" "),i("k-dialog",{ref:"commitDialog",attrs:{theme:"positive"},on:{submit:function(o){return t.$refs.commitForm.submit()}}},[i("k-form",{ref:"commitForm",attrs:{fields:{message:{type:"text",label:"Message",required:!0}}},on:{submit:t.commit},model:{value:t.commitData,callback:function(o){t.commitData=o},expression:"commitData"}})],1)],1),t._v(" "),i("k-column",{attrs:{width:"1/3"}},[i("commits-list",{attrs:{data:t.logData},on:{paginate:t.paginateLog}},[i("k-button-group",{attrs:{slot:"action"},slot:"action"},[i("k-button",{attrs:{icon:"download",disabled:!t.canPull},on:{click:t.pull}},[t._v(" "+t._s(t.isPulling?"Pulling…":"Pull")+" ")]),t._v(" "),i("k-button",{attrs:{icon:"upload",theme:"positive",disabled:!t.canPush},on:{click:t.push}},[t._v(" "+t._s(t.isPushing?"Pushing…":"Push")+" ")])],1)],1)],1)],1)],1)},staticRenderFns:[],_compiled:!0,_scopeId:null,functional:void 0});})();
-},{"./ChangesList.vue":"eFPo","./CommitsList.vue":"Nhf5"}],"Focm":[function(require,module,exports) {
-"use strict";var e=i(require("./components/GitSection.vue")),t=i(require("./components/GitView.vue"));function i(e){return e&&e.__esModule?e:{default:e}}panel.plugin("oblik/git",{sections:{git:e.default},views:{git:{label:"Git",icon:"box",component:t.default}}});
-},{"./components/GitSection.vue":"dzHx","./components/GitView.vue":"xUCk"}]},{},["Focm"], null)
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+(function() {
+  "use strict";
+  var render$3 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("section", [_c("header", { staticClass: "k-section-header" }, [_c("k-headline", [_vm._v(_vm._s(_vm.finalHeadline))]), _vm.list.length ? _c("k-button-group", [_c("k-button", { attrs: { "icon": "share", "link": _vm.link } }, [_vm._v("Open")])], 1) : _vm._e()], 1), _vm.list.length ? _c("k-list", _vm._l(_vm.list, function(entry) {
+      return _c("k-list-item", { key: entry.icon, attrs: { "text": entry.text, "icon": { type: entry.icon, class: "git-icon-change" }, "image": true } });
+    }), 1) : [_c("k-empty", { attrs: { "icon": "check" } }, [_vm._v("No changes")])]], 2);
+  };
+  var staticRenderFns$3 = [];
+  render$3._withStripped = true;
+  function normalizeComponent(scriptExports, render2, staticRenderFns2, functionalTemplate, injectStyles, scopeId, moduleIdentifier, shadowMode) {
+    var options = typeof scriptExports === "function" ? scriptExports.options : scriptExports;
+    if (render2) {
+      options.render = render2;
+      options.staticRenderFns = staticRenderFns2;
+      options._compiled = true;
+    }
+    if (functionalTemplate) {
+      options.functional = true;
+    }
+    if (scopeId) {
+      options._scopeId = "data-v-" + scopeId;
+    }
+    var hook;
+    if (moduleIdentifier) {
+      hook = function(context) {
+        context = context || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext;
+        if (!context && typeof __VUE_SSR_CONTEXT__ !== "undefined") {
+          context = __VUE_SSR_CONTEXT__;
+        }
+        if (injectStyles) {
+          injectStyles.call(this, context);
+        }
+        if (context && context._registeredComponents) {
+          context._registeredComponents.add(moduleIdentifier);
+        }
+      };
+      options._ssrRegister = hook;
+    } else if (injectStyles) {
+      hook = shadowMode ? function() {
+        injectStyles.call(this, (options.functional ? this.parent : this).$root.$options.shadowRoot);
+      } : injectStyles;
+    }
+    if (hook) {
+      if (options.functional) {
+        options._injectStyles = hook;
+        var originalRender = options.render;
+        options.render = function renderWithStyleInjection(h, context) {
+          hook.call(context);
+          return originalRender(h, context);
+        };
+      } else {
+        var existing = options.beforeCreate;
+        options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+      }
+    }
+    return {
+      exports: scriptExports,
+      options
+    };
+  }
+  let updateEvents = [
+    "site.changeTitle",
+    "page.changeTitle",
+    "page.changeStatus",
+    "model.update"
+  ];
+  function getStats() {
+    return {
+      total: 0,
+      added: 0,
+      untracked: 0,
+      modified: 0,
+      renamed: 0,
+      deleted: 0
+    };
+  }
+  const __vue2_script$3 = {
+    data: () => {
+      return {
+        headline: null,
+        stats: getStats()
+      };
+    },
+    computed: {
+      finalHeadline() {
+        let text = this.headline;
+        if (this.stats.total) {
+          text += ` (${this.stats.total} changes)`;
+        }
+        return text;
+      },
+      link() {
+        return window.panel.$url("git").toString();
+      },
+      positiveStatus() {
+        let text = [];
+        if (this.stats.added) {
+          text.push(`${this.stats.added} added`);
+        }
+        if (this.stats.untracked) {
+          text.push(`${this.stats.untracked} untracked`);
+        }
+        if (text.length) {
+          return text.join(", ");
+        } else {
+          return null;
+        }
+      },
+      noticeStatus() {
+        let text = [];
+        if (this.stats.modified) {
+          text.push(`${this.stats.modified} modified`);
+        }
+        if (this.stats.renamed) {
+          text.push(`${this.stats.renamed} renamed`);
+        }
+        if (text.length) {
+          return text.join(", ");
+        } else {
+          return null;
+        }
+      },
+      negativeStatus() {
+        if (this.stats.deleted) {
+          return `${this.stats.deleted} deleted`;
+        } else {
+          return null;
+        }
+      },
+      list() {
+        let result = [];
+        if (this.negativeStatus) {
+          result.push({ icon: "trash", text: this.negativeStatus });
+        }
+        if (this.noticeStatus) {
+          result.push({ icon: "edit", text: this.noticeStatus });
+        }
+        if (this.positiveStatus) {
+          result.push({ icon: "copy", text: this.positiveStatus });
+        }
+        return result;
+      }
+    },
+    created() {
+      this.load().then((response) => {
+        this.headline = response.headline;
+        this.status();
+      });
+      this.$events.$on(updateEvents, this.status);
+    },
+    destroyed() {
+      this.$events.$off(updateEvents, this.status);
+    },
+    methods: {
+      status() {
+        this.$api.get("git/status").then((entries) => {
+          this.stats = getStats();
+          if (entries.length) {
+            this.updateStats(entries);
+          }
+        });
+      },
+      updateStats(entries) {
+        this.stats.total = entries.length;
+        entries.forEach((entry) => {
+          let status = entry.staged || entry.unstaged;
+          switch (status) {
+            case "A":
+              this.stats.added++;
+              break;
+            case "?":
+              this.stats.untracked++;
+              break;
+            case "M":
+              this.stats.modified++;
+              break;
+            case "R":
+              this.stats.renamed++;
+              break;
+            case "D":
+              this.stats.deleted++;
+          }
+        });
+      }
+    }
+  };
+  const __cssModules$3 = {};
+  var __component__$3 = /* @__PURE__ */ normalizeComponent(__vue2_script$3, render$3, staticRenderFns$3, false, __vue2_injectStyles$3, null, null, null);
+  function __vue2_injectStyles$3(context) {
+    for (let o in __cssModules$3) {
+      this[o] = __cssModules$3[o];
+    }
+  }
+  __component__$3.options.__file = "src/components/GitSection.vue";
+  var GitSection = /* @__PURE__ */ function() {
+    return __component__$3.exports;
+  }();
+  var render$2 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("section", { staticClass: "area-git-changes-list" }, [_c("header", { staticClass: "k-section-header" }, [_c("k-headline", [_vm._v(_vm._s(_vm.title))]), _vm._t("action")], 2), _vm.entries ? _c("k-items", { attrs: { "layout": _vm.list } }, _vm._l(_vm.entries, function(entry) {
+      return _c("k-item", { key: entry.file, attrs: { "text": entry.file, "image": { back: "none", icon: entry.icon }, "layout": _vm.list } });
+    }), 1) : [_c("k-empty", { attrs: { "icon": "check" } }, [_vm._v("No changes")])], _c("k-pagination", { attrs: { "align": "center", "details": true, "page": _vm.pageIdx + 1, "total": _vm.data.length, "limit": _vm.perPage }, on: { "paginate": _vm.changePage } })], 2);
+  };
+  var staticRenderFns$2 = [];
+  render$2._withStripped = true;
+  var ChangesList_vue_vue_type_style_index_0_lang = "";
+  const __vue2_script$2 = {
+    props: {
+      title: {
+        type: String
+      },
+      data: {
+        type: Array
+      }
+    },
+    data() {
+      return {
+        perPage: 15,
+        pageIdx: 0
+      };
+    },
+    computed: {
+      pages() {
+        return this.data.reduce((acc, val, i) => {
+          let idx = Math.floor(i / this.perPage);
+          let page = acc[idx] || (acc[idx] = []);
+          page.push(val);
+          return acc;
+        }, []);
+      },
+      page() {
+        if (!this.pages[this.pageIdx]) {
+          this.pageIdx = 0;
+        }
+        return this.pages[this.pageIdx];
+      },
+      entries() {
+        if (this.page) {
+          return this.page.map((entry) => {
+            return {
+              file: entry.file,
+              mode: entry.mode,
+              icon: this.getIcon(entry.mode)
+            };
+          });
+        } else {
+          return null;
+        }
+      }
+    },
+    methods: {
+      changePage(data) {
+        this.pageIdx = data.page - 1;
+      },
+      getIcon(mode) {
+        let icon = "dots";
+        switch (mode) {
+          case "?":
+          case "A":
+            icon = "copy";
+            break;
+          case "M":
+            icon = "edit";
+            break;
+          case "R":
+            icon = "refresh";
+            break;
+          case "D":
+            icon = "trash";
+        }
+        return icon;
+      }
+    }
+  };
+  const __cssModules$2 = {};
+  var __component__$2 = /* @__PURE__ */ normalizeComponent(__vue2_script$2, render$2, staticRenderFns$2, false, __vue2_injectStyles$2, null, null, null);
+  function __vue2_injectStyles$2(context) {
+    for (let o in __cssModules$2) {
+      this[o] = __cssModules$2[o];
+    }
+  }
+  __component__$2.options.__file = "src/components/ChangesList.vue";
+  var ChangesList = /* @__PURE__ */ function() {
+    return __component__$2.exports;
+  }();
+  var render$1 = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("section", [_c("header", { staticClass: "k-section-header" }, [_c("k-headline", [_vm._v("Commits")]), _vm._t("action")], 2), _vm.data && _vm.commits.length ? _c("k-list", _vm._l(_vm.commits, function(commit) {
+      return _c("k-item", { key: commit.hash, attrs: { "text": commit.subject, "info": commit.hash, "image": true } });
+    }), 1) : [_c("k-empty", { attrs: { "icon": "circle-filled" } }, [_vm._v("No commits")])], _vm.data ? _c("k-pagination", _vm._g({ attrs: { "align": "center", "details": true, "page": _vm.page, "total": _vm.data.total, "limit": _vm.limit } }, _vm.$listeners)) : _vm._e()], 2);
+  };
+  var staticRenderFns$1 = [];
+  render$1._withStripped = true;
+  var CommitsList_vue_vue_type_style_index_0_lang = "";
+  const __vue2_script$1 = {
+    props: {
+      data: Object
+    },
+    data() {
+      return {
+        page: 1,
+        limit: 15
+      };
+    },
+    computed: {
+      commits() {
+        return this.data.commits.map((commit) => {
+          let icon = commit.new ? "upload" : "circle-filled";
+          return __spreadProps(__spreadValues({}, commit), {
+            icon
+          });
+        });
+      }
+    },
+    created() {
+      this.$emit("paginate", {
+        page: this.page,
+        limit: this.limit
+      });
+    }
+  };
+  const __cssModules$1 = {};
+  var __component__$1 = /* @__PURE__ */ normalizeComponent(__vue2_script$1, render$1, staticRenderFns$1, false, __vue2_injectStyles$1, null, null, null);
+  function __vue2_injectStyles$1(context) {
+    for (let o in __cssModules$1) {
+      this[o] = __cssModules$1[o];
+    }
+  }
+  __component__$1.options.__file = "src/components/CommitsList.vue";
+  var CommitsList = /* @__PURE__ */ function() {
+    return __component__$1.exports;
+  }();
+  var render = function() {
+    var _vm = this;
+    var _h = _vm.$createElement;
+    var _c = _vm._self._c || _h;
+    return _c("k-inside", [_c("k-view", [_c("k-header", [_vm._v("Version Control")]), _c("k-grid", { attrs: { "gutter": "medium" } }, [_c("k-column", { attrs: { "width": "1/3" } }, [_c("changes-list", { attrs: { "title": "Unstaged", "data": this.unstaged } }, [this.unstaged.length ? _c("k-button-group", { attrs: { "slot": "action" }, slot: "action" }, [_c("k-button", { attrs: { "icon": "add" }, on: { "click": _vm.add } }, [_vm._v("Add")])], 1) : _vm._e()], 1)], 1), _c("k-column", { attrs: { "width": "1/3" } }, [_c("changes-list", { attrs: { "title": "Staged", "data": this.staged } }, [this.staged.length ? _c("k-button-group", { attrs: { "slot": "action" }, slot: "action" }, [_c("k-button", { attrs: { "icon": "circle-filled" }, on: { "click": function($event) {
+      return _vm.$refs.commitDialog.open();
+    } } }, [_vm._v("Commit")])], 1) : _vm._e()], 1), _c("k-dialog", { ref: "commitDialog", attrs: { "theme": "positive" }, on: { "submit": function($event) {
+      return _vm.$refs.commitForm.submit();
+    } } }, [_c("k-form", { ref: "commitForm", attrs: { "fields": {
+      message: {
+        type: "text",
+        label: "Message",
+        required: true
+      }
+    } }, on: { "submit": _vm.commit }, model: { value: _vm.commitData, callback: function($$v) {
+      _vm.commitData = $$v;
+    }, expression: "commitData" } })], 1)], 1), _c("k-column", { attrs: { "width": "1/3" } }, [_c("commits-list", { attrs: { "data": _vm.logData }, on: { "paginate": _vm.paginateLog } }, [_c("k-button-group", { attrs: { "slot": "action" }, slot: "action" }, [_c("k-button", { attrs: { "icon": "download", "disabled": !_vm.canPull }, on: { "click": _vm.pull } }, [_vm._v(" " + _vm._s(_vm.isPulling ? "Pulling\u2026" : "Pull") + " ")]), _c("k-button", { attrs: { "icon": "upload", "theme": "positive", "disabled": !_vm.canPush }, on: { "click": _vm.push } }, [_vm._v(" " + _vm._s(_vm.isPushing ? "Pushing\u2026" : "Push") + " ")])], 1)], 1)], 1)], 1)], 1)], 1);
+  };
+  var staticRenderFns = [];
+  render._withStripped = true;
+  const __vue2_script = {
+    components: {
+      ChangesList,
+      CommitsList
+    },
+    data() {
+      return {
+        staged: [],
+        unstaged: [],
+        commitData: {
+          message: null
+        },
+        logData: null,
+        logPgn: null,
+        isPulling: false,
+        isPushing: false
+      };
+    },
+    computed: {
+      canPull() {
+        return !this.isPushing && !this.isPulling;
+      },
+      canPush() {
+        var _a;
+        return !this.isPushing && !this.isPulling && ((_a = this.logData) == null ? void 0 : _a.new);
+      }
+    },
+    created() {
+      this.$api.get("git/status").then((entries) => {
+        this.updateStatus(entries);
+      }).catch((error) => {
+        this.$store.dispatch("notification/error", error);
+      });
+    },
+    methods: {
+      updateStatus(entries) {
+        this.staged = [];
+        this.unstaged = [];
+        entries.forEach((entry) => {
+          if (entry.unstaged) {
+            this.unstaged.push({
+              file: entry.file,
+              mode: entry.unstaged
+            });
+          }
+          if (entry.staged && entry.staged !== "?") {
+            this.staged.push({
+              file: entry.file,
+              mode: entry.staged
+            });
+          }
+        });
+      },
+      add() {
+        this.$api.post("git/add").then(() => {
+          return this.$api.get("git/status");
+        }).then((entries) => {
+          this.updateStatus(entries);
+        });
+      },
+      commit() {
+        this.$api.post("git/commit", this.commitData).then(() => {
+          this.$refs.commitDialog.close();
+          return this.$api.get("git/status");
+        }).then((entries) => {
+          this.commitData.message = null;
+          this.updateStatus(entries);
+        }).catch((error) => {
+          this.$refs.commitDialog.error(error.message);
+        }).then(() => {
+          this.listCommits();
+        });
+      },
+      paginateLog(data) {
+        this.logPgn = {
+          page: data.page,
+          limit: data.limit
+        };
+        this.listCommits();
+      },
+      listCommits() {
+        return this.$api.get("git/log", this.logPgn).then((data) => {
+          this.logData = data;
+        });
+      },
+      push() {
+        this.isPushing = true;
+        this.$api.post("git/push").then(() => {
+          return this.listCommits();
+        }).catch((error) => {
+          this.$store.dispatch("notification/error", error);
+        }).then(() => {
+          this.isPushing = false;
+        });
+      },
+      pull() {
+        this.isPulling = true;
+        this.$api.get("git/pull").then(() => {
+          return this.listCommits();
+        }).catch((error) => {
+          this.$store.dispatch("notification/error", error);
+        }).then(() => {
+          this.isPulling = false;
+        });
+      }
+    }
+  };
+  const __cssModules = {};
+  var __component__ = /* @__PURE__ */ normalizeComponent(__vue2_script, render, staticRenderFns, false, __vue2_injectStyles, null, null, null);
+  function __vue2_injectStyles(context) {
+    for (let o in __cssModules) {
+      this[o] = __cssModules[o];
+    }
+  }
+  __component__.options.__file = "src/components/GitView.vue";
+  var GitView = /* @__PURE__ */ function() {
+    return __component__.exports;
+  }();
+  panel.plugin("oblik/git", {
+    sections: {
+      git: GitSection
+    },
+    components: {
+      "k-git-view": GitView
+    }
+  });
+})();

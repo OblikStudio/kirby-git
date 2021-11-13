@@ -6,14 +6,13 @@
 		</header>
 
 		<k-list v-if="data && commits.length">
-			<k-list-item
+			<k-item
 				v-for="commit in commits"
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
-				:icon="{ type: commit.icon, class: 'git-icon-commit' }"
 				:image="true"
-			></k-list-item>
+			></k-item>
 		</k-list>
 		<template v-else>
 			<k-empty icon="circle-filled">No commits</k-empty>

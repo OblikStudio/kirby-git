@@ -1,19 +1,19 @@
 <template>
-	<section>
+	<section class="area-git-changes-list">
 		<header class="k-section-header">
 			<k-headline>{{ title }}</k-headline>
 			<slot name="action"></slot>
 		</header>
 
-		<k-list v-if="entries">
-			<k-list-item
+		<k-items v-if="entries" :layout="list">
+			<k-item
 				v-for="entry in entries"
 				:key="entry.file"
 				:text="entry.file"
-				:icon="{ type: entry.icon, class: 'git-icon-change' }"
-				:image="true"
-			></k-list-item>
-		</k-list>
+				:image="{ back: 'none', icon: entry.icon }"
+				:layout="list"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
@@ -104,20 +104,23 @@ export default {
 };
 </script>
 
-<style>
-.git-icon-change.k-icon-copy {
-	background: var(--color-positive);
-	color: black;
-}
+<style lang="scss">
+.area-git-changes-list {
+	.k-icon {
+		color: var(--color-gray-900);
+	}
 
-.git-icon-change.k-icon-edit,
-.git-icon-change.k-icon-refresh {
-	background: var(--color-notice);
-	color: black;
-}
+	.k-icon-copy {
+		background: var(--color-positive);
+	}
 
-.git-icon-change.k-icon-trash {
-	background: var(--color-negative);
-	color: black;
+	.k-icon-edit,
+	.k-icon-refresh {
+		background: var(--color-notice);
+	}
+
+	.k-icon-trash {
+		background: var(--color-negative);
+	}
 }
 </style>

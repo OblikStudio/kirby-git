@@ -61,7 +61,7 @@ export default {
 			return text
 		},
 		link () {
-			return window.panel.plugins.views.git.link
+			return window.panel.$url('git').toString()
 		},
 		positiveStatus () {
 			let text = []
