@@ -10,7 +10,7 @@
 				v-for="entry in entries"
 				:key="entry.file"
 				:text="entry.file"
-				:image="{ back: 'none', icon: entry.icon }"
+				:image="entry.image"
 			></k-item>
 		</k-items>
 		<template v-else>
@@ -64,10 +64,35 @@ export default {
 		entries () {
 			if (this.page) {
 				return this.page.map(entry => {
+					let image = {
+						back: 'black',
+						icon: 'question',
+						color: 'var(--color-gray-800)'
+					}
+
+					switch (entry.mode) {
+						case '?':
+						case 'A':
+							image.back = 'var(--color-positive)'
+							image.icon = 'copy'
+							break
+						case 'M':
+							image.back = 'var(--color-notice)'
+							image.icon = 'edit'
+							break
+						case 'R':
+							image.back = 'var(--color-notice)'
+							image.icon = 'refresh'
+							break
+						case 'D':
+							image.back = 'var(--color-negative)'
+							image.icon = 'trash'
+					}
+
 					return {
 						file: entry.file,
 						mode: entry.mode,
-						icon: this.getIcon(entry.mode)
+						image
 					}
 				})
 			} else {
@@ -78,48 +103,7 @@ export default {
 	methods: {
 		changePage (data) {
 			this.pageIdx = data.page - 1
-		},
-		getIcon (mode) {
-			let icon = 'dots'
-
-			switch (mode) {
-				case '?':
-				case 'A':
-					icon = 'copy'
-					break
-				case 'M':
-					icon = 'edit'
-					break
-				case 'R':
-					icon = 'refresh'
-					break
-				case 'D':
-					icon = 'trash'
-			}
-
-			return icon
 		}
 	}
 };
 </script>
-
-<style lang="scss">
-.area-git-changes-list {
-	.k-icon {
-		color: var(--color-gray-900);
-	}
-
-	.k-icon-copy {
-		background: var(--color-positive);
-	}
-
-	.k-icon-edit,
-	.k-icon-refresh {
-		background: var(--color-notice);
-	}
-
-	.k-icon-trash {
-		background: var(--color-negative);
-	}
-}
-</style>
