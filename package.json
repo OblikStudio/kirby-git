@@ -1,10 +1,12 @@
 {
   "scripts": {
+    "fix": "prettier . --write --ignore-unknown",
     "dev": "kirbyup src/index.js --watch",
     "build": "kirbyup src/index.js"
   },
   "devDependencies": {
-    "kirbyup": "^0.21.1"
+    "kirbyup": "^0.21.1",
+    "prettier": "^2.4.1"
   },
   "prettier": {
     "htmlWhitespaceSensitivity": "ignore"

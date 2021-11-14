@@ -1,0 +1,12 @@
+/content/
+/content-origin/
+/kirby/
+/media/
+/node_modules/
+/site/accounts/
+/site/sessions/
+/vendor/
+/composer*
+/index.css
+/index.js
+/package*
