@@ -1,7 +1,10 @@
 #!/bin/bash
+#
+# Sets up two dummy repositories, one acting as a remote and another acting as a
+# clone, where you can make commits and test the plugin's functionality,
+# including push/pull.
 
-script_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd $script_dir/..
+cd "$(dirname "$0")/.."
 
 origin=content-origin
 clone=content
@@ -23,7 +26,6 @@ git commit -m "initial commit"
 cd ..
 git clone $origin $clone
 
-echo -e "\n\033[1;32mSuccess!\033[0m"
-echo -e "You can now use make changes to '$clone' via the panel and push them" \
-"to '$origin' with kirby-git. Then, you can make changes to '$origin' with" \
-"your text editor, commit them, and pull them in '$clone' via kirby-git."
+echo -e "\nYou can now use make changes to '$clone' via the panel and push" \
+"them to '$origin' with kirby-git. Then, you can make changes to '$origin'" \
+"with your text editor, commit them, and pull them in '$clone' via kirby-git."
