@@ -14,6 +14,7 @@ App::plugin('oblik/git', [
 	'areas' => [
 		'git' => function () {
 			return [
+				'label' => 'Git',
 				'icon' => 'box',
 				'menu' => true,
 				'views' => [
@@ -21,8 +22,7 @@ App::plugin('oblik/git', [
 						'pattern' => 'git',
 						'action' => function () {
 							return [
-								'component' => 'k-git-view',
-								'title' => 'Git',
+								'component' => 'k-git-view'
 							];
 						}
 					]
