@@ -1,21 +1,9 @@
-# Composer
-composer.phar
-/vendor
-
-# Kirby
-/kirby
-/media
-/site/accounts
-/site/sessions
-
-# Node
-/node_modules
-
-# Parcel
-/.cache
-
-# Test repos
-/content
-/remote
-
+/content/
+/content-origin/
+/kirby/
+/media/
+/node_modules/
+/site/accounts/
+/site/sessions/
+/vendor/
 /.php-cs-fixer.cache
