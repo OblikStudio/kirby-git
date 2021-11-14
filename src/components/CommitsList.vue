@@ -5,12 +5,17 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-items v-if="data && commits.length" :layout="list">
+		<k-items v-if="data && data.commits.length">
 			<k-item
-				v-for="commit in commits"
+				v-for="commit in data.commits"
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
+				:image="{
+					back: commit.new ? 'green' : 'black',
+					icon: commit.new ? 'upload' : 'circle-filled',
+					color: commit.new ? 'gray-800' : 'gray-500'
+				}"
 			></k-item>
 		</k-items>
 		<template v-else>
@@ -40,20 +45,6 @@ export default {
 			limit: 15
 		}
 	},
-	computed: {
-		commits () {
-			return this.data.commits.map(commit => {
-				let icon = commit.new
-					? 'upload'
-					: 'circle-filled'
-
-				return {
-					...commit,
-					icon
-				}
-			})
-		}
-	},
 	created () {
 		this.$emit('paginate', {
 			page: this.page,
@@ -63,14 +54,8 @@ export default {
 }
 </script>
 
-<style>
-.git-icon-commit {
-	background: black;
-	color: white;
-}
-
-.git-icon-commit.k-icon-upload {
-	background: var(--color-positive);
-	color: black;
+<style scoped>
+.k-item >>> .k-item-info {
+	font-family: var(--font-mono);
 }
 </style>
