@@ -17,3 +17,5 @@ composer.phar
 # Test repos
 /content
 /remote
+
+/.php-cs-fixer.cache

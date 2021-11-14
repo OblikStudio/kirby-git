@@ -10,9 +10,15 @@
       "homepage": "https://dodov.me/"
     }
   ],
+  "scripts": {
+    "fix": "php-cs-fixer fix"
+  },
   "require": {
     "getkirby/cms": "^3.6@dev",
     "getkirby/composer-installer": "^1.2"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.2"
   },
   "extra": {
     "installer-name": "git"
