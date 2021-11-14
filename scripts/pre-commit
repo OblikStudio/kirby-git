@@ -1,22 +1,33 @@
 #!/bin/bash
+#
+# Git hook that goes over staged files and runs them through either PHP CS Fixer
+# or Prettier to check their formatting. If any of them are invalid, the commit
+# will be aborted.
 
 git diff-index --cached --name-only HEAD | while read -r file; do
 	case "$file" in
-		*.php)
-			output=$(vendor/bin/php-cs-fixer fix "$file" --dry-run --diff 2>&1)
+		*.js | *.vue)
+			fmt="Prettier"
+			out=$(git show :$file | node_modules/.bin/prettier --check --stdin-filepath "$file" 2>&1)
 		;;
 
-		*.js | *.vue)
-			output=$(node_modules/.bin/prettier "$file" --check 2>&1)
+		*.php)
+			fmt="PHP CS Fixer"
+			out=$(git show :$file | vendor/bin/php-cs-fixer fix - --dry-run --diff 2>&1)
 		;;
 	esac
 
-	status=$?
+	if [ $? != 0 ]; then
+		if [ "$fmt" == "Prettier" ]; then
+			cmd="npm run fix"
+		else
+			cmd="composer fix"
+		fi
 
-	if [ $status != 0 ]; then
-		echo -e "Incorrectly formatted: $file (exit code $status)."
+		echo -e "$fmt: Incorrectly formatted file: $file. Run \"$cmd\" to fix it, then stage the result.\n"
 		echo "Formatter output:"
-		echo "$output"
+		echo "$out"
+
 		exit 1
 	fi
 done
