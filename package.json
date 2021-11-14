@@ -4,7 +4,6 @@
     "build": "kirbyup src/index.js"
   },
   "devDependencies": {
-    "vue-hot-reload-api": "^2.3.4",
     "kirbyup": "^0.21.1"
   }
 }
