@@ -24,7 +24,7 @@
 </template>
 
 <script>
-let updateEvents = [
+const UPDATE_EVENTS = [
 	'site.changeTitle',
 	'page.changeTitle',
 	'page.changeStatus',
@@ -127,10 +127,10 @@ export default {
 			this.status()
 		})
 
-		this.$events.$on(updateEvents, this.status)
+		UPDATE_EVENTS.forEach(e => this.$events.$on(e, this.status));
 	},
 	destroyed () {
-		this.$events.$off(updateEvents, this.status)
+		UPDATE_EVENTS.forEach(e => this.$events.$off(e, this.status));
 	},
 	methods: {
 		status () {
