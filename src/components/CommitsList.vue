@@ -14,7 +14,7 @@
 				:image="{
 					back: commit.new ? 'green' : 'black',
 					icon: commit.new ? 'upload' : 'circle-filled',
-					color: commit.new ? 'gray-800' : 'gray-500'
+					color: commit.new ? 'gray-800' : 'gray-500',
 				}"
 			></k-item>
 		</k-items>
@@ -37,21 +37,21 @@
 <script>
 export default {
 	props: {
-		data: Object
+		data: Object,
 	},
-	data () {
+	data() {
 		return {
 			page: 1,
-			limit: 15
-		}
+			limit: 15,
+		};
 	},
-	created () {
-		this.$emit('paginate', {
+	created() {
+		this.$emit("paginate", {
 			page: this.page,
-			limit: this.limit
-		})
-	}
-}
+			limit: this.limit,
+		});
+	},
+};
 </script>
 
 <style scoped>

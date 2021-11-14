@@ -5,5 +5,8 @@
   },
   "devDependencies": {
     "kirbyup": "^0.21.1"
+  },
+  "prettier": {
+    "htmlWhitespaceSensitivity": "ignore"
   }
 }

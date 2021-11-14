@@ -32,78 +32,78 @@
 export default {
 	props: {
 		title: {
-			type: String
+			type: String,
 		},
 		data: {
-			type: Array
-		}
+			type: Array,
+		},
 	},
-	data () {
+	data() {
 		return {
 			perPage: 15,
-			pageIdx: 0
-		}
+			pageIdx: 0,
+		};
 	},
 	computed: {
-		pages () {
+		pages() {
 			return this.data.reduce((acc, val, i) => {
-				let idx = Math.floor(i / this.perPage)
-				let page = acc[idx] || (acc[idx] = [])
-				page.push(val)
+				let idx = Math.floor(i / this.perPage);
+				let page = acc[idx] || (acc[idx] = []);
+				page.push(val);
 
-				return acc
-			}, [])
+				return acc;
+			}, []);
 		},
-		page () {
+		page() {
 			if (!this.pages[this.pageIdx]) {
-				this.pageIdx = 0
+				this.pageIdx = 0;
 			}
 
-			return this.pages[this.pageIdx]
+			return this.pages[this.pageIdx];
 		},
-		entries () {
+		entries() {
 			if (this.page) {
-				return this.page.map(entry => {
+				return this.page.map((entry) => {
 					let image = {
-						back: 'black',
-						icon: 'question',
-						color: 'var(--color-gray-800)'
-					}
+						back: "black",
+						icon: "question",
+						color: "var(--color-gray-800)",
+					};
 
 					switch (entry.mode) {
-						case '?':
-						case 'A':
-							image.back = 'var(--color-positive)'
-							image.icon = 'copy'
-							break
-						case 'M':
-							image.back = 'var(--color-notice)'
-							image.icon = 'edit'
-							break
-						case 'R':
-							image.back = 'var(--color-notice)'
-							image.icon = 'refresh'
-							break
-						case 'D':
-							image.back = 'var(--color-negative)'
-							image.icon = 'trash'
+						case "?":
+						case "A":
+							image.back = "var(--color-positive)";
+							image.icon = "copy";
+							break;
+						case "M":
+							image.back = "var(--color-notice)";
+							image.icon = "edit";
+							break;
+						case "R":
+							image.back = "var(--color-notice)";
+							image.icon = "refresh";
+							break;
+						case "D":
+							image.back = "var(--color-negative)";
+							image.icon = "trash";
 					}
 
 					return {
 						file: entry.file,
 						mode: entry.mode,
-						image
-					}
-				})
+						image,
+					};
+				});
 			} else {
-				return null
+				return null;
 			}
-		}
+		},
 	},
 	methods: {
-		changePage (data) {
-			this.pageIdx = data.page - 1
-		}
-	}
+		changePage(data) {
+			this.pageIdx = data.page - 1;
+		},
+	},
 };
 </script>
