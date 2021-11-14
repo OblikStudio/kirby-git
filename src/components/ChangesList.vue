@@ -5,7 +5,7 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-items v-if="entries" :layout="list">
+		<k-items v-if="entries">
 			<k-item
 				v-for="entry in entries"
 				:key="entry.file"
