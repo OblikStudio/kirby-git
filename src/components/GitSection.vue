@@ -7,12 +7,12 @@
 			</k-button-group>
 		</header>
 
-		<k-items v-if="list.length" :layout="list">
+		<k-items v-if="list.length">
 			<k-item
 				v-for="entry in list"
-				:key="entry.icon"
+				:key="entry.image.icon"
 				:text="entry.text"
-				:image="{ back: 'none', icon: entry.icon }"
+				:image="entry.image"
 			></k-item>
 		</k-items>
 		<template v-else>
@@ -104,16 +104,37 @@ export default {
 		list() {
 			let result = [];
 
-			if (this.negativeStatus) {
-				result.push({ icon: "trash", text: this.negativeStatus });
+			if (this.positiveStatus) {
+				result.push({
+					text: this.positiveStatus,
+					image: {
+						icon: "copy",
+						back: "var(--color-positive)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
 			if (this.noticeStatus) {
-				result.push({ icon: "edit", text: this.noticeStatus });
+				result.push({
+					text: this.noticeStatus,
+					image: {
+						icon: "edit",
+						back: "var(--color-notice)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
-			if (this.positiveStatus) {
-				result.push({ icon: "copy", text: this.positiveStatus });
+			if (this.negativeStatus) {
+				result.push({
+					text: this.negativeStatus,
+					image: {
+						icon: "trash",
+						back: "var(--color-negative)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
 			return result;
