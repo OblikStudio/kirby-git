@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Sets up the pre-commit git hook by copying it to the .git folder.
+
+cd "$(dirname "$0")"
+cp pre-commit ../.git/hooks/pre-commit
+
+echo "Successfully set up pre-commit hook to check for code formatting."
