@@ -10,7 +10,7 @@ You should have the following installed on your machine:
 - [`npm`](https://www.npmjs.com/) version `^7.0`
 - [`composer`](https://getcomposer.org/) version `^2.0`
 
-Then, you should clone the repo and run the [`./scripts/init`](../scripts/init)
+Then, you should clone the repo and run the [`bash ./scripts/init`](../scripts/init)
 script. It will:
 
 1. Install all dependencies

@@ -7,13 +7,17 @@ cd "$(dirname "$0")/.."
 echo -e "\n\033[1;34mInstalling npm dependencies\033[0m"
 npm i
 
+cd testwebsite
+
 echo -e "\n\033[1;34mInstalling composer dependencies\033[0m"
 composer install
 
+ln -s ../scripts .
+
 echo -e "\n\033[1;34mSetting up git hook for code formatting\033[0m"
-./scripts/add-git-hooks
+bash ./scripts/add-git-hooks
 
 echo -e "\n\033[1;34mCreating dummy content repos\033[0m"
-./scripts/create-repos
+bash ./scripts/create-repos
 
 echo -e "\n\033[1;32mInitialization successful!\033[0m"

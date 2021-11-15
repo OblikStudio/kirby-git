@@ -1,0 +1,16 @@
+{
+    "scripts": {
+      "start": [
+        "Composer\\Config::disableProcessTimeout",
+        "@php -S 127.0.0.1:8000 kirby/router.php"
+      ]
+    },
+    "require": {
+      "getkirby/cms": "^3.6@dev",
+      "getkirby/composer-installer": "^1.2"
+    },
+    "extra": {
+      "installer-name": "git"
+    }
+  }
+  
