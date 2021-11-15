@@ -1,4 +1,4 @@
-/docs/                  export-ignore
+/.github/               export-ignore
 /scripts/               export-ignore
 /site/                  export-ignore
 /src/                   export-ignore
