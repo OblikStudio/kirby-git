@@ -1,3 +1,9 @@
+**For contributing instructions, please check [CONTRIBUTING.md](./CONTRIBUTING.md). Thanks!**
+
+**Note:** The [`dev`](https://github.com/OblikStudio/kirby-git/tree/dev) branch contains the required compatibility fixes for [Kirby 3.6](https://getkirby.com/releases/3.6). Once Kirby 3.6 is officially released, the `dev` branch will be merged and a new release will be made. Until then, use [the `dev-dev` version from Composer](https://packagist.org/packages/oblik/kirby-git#dev-dev).
+
+**Note 2:** Once the Kirby 3.6 docs come up (especially the [UI Kit](https://getkirby.com/docs/reference/plugins/ui) ones), I'll be able to invest some time and add a few features I've planned for a while.
+
 # Kirby Git
 
 Shows you Git changes in the Kirby panel and allows you to add/commit/push them, manually or automatically.
