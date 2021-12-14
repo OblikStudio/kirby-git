@@ -11,6 +11,25 @@ load([
 ], __DIR__);
 
 App::plugin('oblik/git', [
+	'areas' => [
+		'git' => function () {
+			return [
+				'label' => 'Git',
+				'icon' => 'box',
+				'menu' => true,
+				'views' => [
+					[
+						'pattern' => 'git',
+						'action' => function () {
+							return [
+								'component' => 'k-git-view'
+							];
+						}
+					]
+				]
+			];
+		}
+	],
 	'options' => [
 		'bin' => 'git',
 		'repo' => kirby()->root('index'),

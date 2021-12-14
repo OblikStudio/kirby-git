@@ -5,16 +5,19 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-list v-if="data && commits.length">
-			<k-list-item
-				v-for="commit in commits"
+		<k-items v-if="data && data.commits.length">
+			<k-item
+				v-for="commit in data.commits"
 				:key="commit.hash"
 				:text="commit.subject"
 				:info="commit.hash"
-				:icon="{ type: commit.icon, class: 'git-icon-commit' }"
-				:image="true"
-			></k-list-item>
-		</k-list>
+				:image="{
+					back: commit.new ? 'green' : 'black',
+					icon: commit.new ? 'upload' : 'circle-filled',
+					color: commit.new ? 'gray-800' : 'gray-500',
+				}"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="circle-filled">No commits</k-empty>
 		</template>
@@ -34,45 +37,25 @@
 <script>
 export default {
 	props: {
-		data: Object
+		data: Object,
 	},
-	data () {
+	data() {
 		return {
 			page: 1,
-			limit: 15
-		}
+			limit: 15,
+		};
 	},
-	computed: {
-		commits () {
-			return this.data.commits.map(commit => {
-				let icon = commit.new
-					? 'upload'
-					: 'circle-filled'
-
-				return {
-					...commit,
-					icon
-				}
-			})
-		}
-	},
-	created () {
-		this.$emit('paginate', {
+	created() {
+		this.$emit("paginate", {
 			page: this.page,
-			limit: this.limit
-		})
-	}
-}
+			limit: this.limit,
+		});
+	},
+};
 </script>
 
-<style>
-.git-icon-commit {
-	background: black;
-	color: white;
-}
-
-.git-icon-commit.k-icon-upload {
-	background: var(--color-positive);
-	color: black;
+<style scoped>
+.k-item >>> .k-item-info {
+	font-family: var(--font-mono);
 }
 </style>

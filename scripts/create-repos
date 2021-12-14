@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Sets up two dummy repositories, one acting as a remote and another acting as a
+# clone, where you can make commits and test the plugin's functionality,
+# including push/pull.
+
+cd "$(dirname "$0")/.."
+
+origin=content-origin
+clone=content
+
+rm -rf $origin
+rm -rf $clone
+
+mkdir -p $origin
+cd $origin
+git init
+git config receive.denyCurrentBranch updateInstead
+
+mkdir -p home
+echo "Title: Home" > home/home.txt 
+echo "Title: Kirby Git" > site.txt 
+git add .
+git commit -m "initial commit"
+
+cd ..
+git clone $origin $clone
+
+echo -e "\nYou can now use make changes to '$clone' via the panel and push" \
+"them to '$origin' with kirby-git. Then, you can make changes to '$origin'" \
+"with your text editor, commit them, and pull them in '$clone' via kirby-git."

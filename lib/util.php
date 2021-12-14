@@ -29,6 +29,7 @@ function hook(string $name)
 		try {
 			$git->add();
 			$git->commit($message);
-		} catch (Exception $e) {}
+		} catch (Exception $e) {
+		}
 	};
 }

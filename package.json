@@ -1,15 +1,14 @@
 {
   "scripts": {
-    "dev": "parcel watch src/index.js --no-source-maps -d ./",
-    "build": "parcel build src/index.js --no-source-maps -d ./"
+    "fix": "prettier . --write --ignore-unknown",
+    "dev": "kirbyup src/index.js --watch",
+    "build": "kirbyup src/index.js"
   },
   "devDependencies": {
-    "@vue/component-compiler-utils": "^3.1.1",
-    "parcel-bundler": "^1.12.4",
-    "vue-template-compiler": "^2.6.11"
+    "kirbyup": "^0.21.1",
+    "prettier": "^2.4.1"
   },
-  "dependencies": {
-    "vue": "^2.6.11",
-    "vue-hot-reload-api": "^2.3.4"
+  "prettier": {
+    "htmlWhitespaceSensitivity": "ignore"
   }
 }

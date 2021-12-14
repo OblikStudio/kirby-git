@@ -1,6 +1,5 @@
 <template>
-	<section>
-
+	<section class="area-git-changes-list">
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
 			<k-button-group v-if="list.length">
@@ -8,165 +7,184 @@
 			</k-button-group>
 		</header>
 
-		<k-list v-if="list.length">
-			<k-list-item
+		<k-items v-if="list.length">
+			<k-item
 				v-for="entry in list"
-				:key="entry.icon"
+				:key="entry.image.icon"
 				:text="entry.text"
-				:icon="{ type: entry.icon, class: 'git-icon-change' }"
-				:image="true"
-			></k-list-item>
-		</k-list>
+				:image="entry.image"
+			></k-item>
+		</k-items>
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
-
 	</section>
 </template>
 
 <script>
-let updateEvents = [
-	'site.changeTitle',
-	'page.changeTitle',
-	'page.changeStatus',
-	'model.update'
-]
+const UPDATE_EVENTS = [
+	"site.changeTitle",
+	"page.changeTitle",
+	"page.changeStatus",
+	"model.update",
+];
 
-function getStats () {
+function getStats() {
 	return {
 		total: 0,
 		added: 0,
 		untracked: 0,
 		modified: 0,
 		renamed: 0,
-		deleted: 0
-	}
+		deleted: 0,
+	};
 }
 
 export default {
 	data: () => {
 		return {
 			headline: null,
-			stats: getStats()
-		}
+			stats: getStats(),
+		};
 	},
 	computed: {
-		finalHeadline () {
-			let text = this.headline
+		finalHeadline() {
+			let text = this.headline;
 
 			if (this.stats.total) {
-				text += ` (${ this.stats.total } changes)`
+				text += ` (${this.stats.total} changes)`;
 			}
 
-			return text
+			return text;
 		},
-		link () {
-			return window.panel.plugins.views.git.link
+		link() {
+			return window.panel.$url("git").toString();
 		},
-		positiveStatus () {
-			let text = []
+		positiveStatus() {
+			let text = [];
 
 			if (this.stats.added) {
-				text.push(`${ this.stats.added } added`)
+				text.push(`${this.stats.added} added`);
 			}
 
 			if (this.stats.untracked) {
-				text.push(`${ this.stats.untracked } untracked`)
+				text.push(`${this.stats.untracked} untracked`);
 			}
 
 			if (text.length) {
-				return text.join(', ')
+				return text.join(", ");
 			} else {
-				return null
+				return null;
 			}
 		},
-		noticeStatus () {
-			let text = []
+		noticeStatus() {
+			let text = [];
 
 			if (this.stats.modified) {
-				text.push(`${ this.stats.modified } modified`)
+				text.push(`${this.stats.modified} modified`);
 			}
 
 			if (this.stats.renamed) {
-				text.push(`${ this.stats.renamed } renamed`)
+				text.push(`${this.stats.renamed} renamed`);
 			}
 
 			if (text.length) {
-				return text.join(', ')
+				return text.join(", ");
 			} else {
-				return null
+				return null;
 			}
 		},
-		negativeStatus () {
+		negativeStatus() {
 			if (this.stats.deleted) {
-				return `${ this.stats.deleted } deleted`
+				return `${this.stats.deleted} deleted`;
 			} else {
-				return null
+				return null;
 			}
 		},
-		list () {
-			let result = []
+		list() {
+			let result = [];
 
-			if (this.negativeStatus) {
-				result.push({ icon: 'trash', text: this.negativeStatus })
+			if (this.positiveStatus) {
+				result.push({
+					text: this.positiveStatus,
+					image: {
+						icon: "copy",
+						back: "var(--color-positive)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
 			if (this.noticeStatus) {
-				result.push({ icon: 'edit', text: this.noticeStatus })
+				result.push({
+					text: this.noticeStatus,
+					image: {
+						icon: "edit",
+						back: "var(--color-notice)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
-			if (this.positiveStatus) {
-				result.push({ icon: 'copy', text: this.positiveStatus })
+			if (this.negativeStatus) {
+				result.push({
+					text: this.negativeStatus,
+					image: {
+						icon: "trash",
+						back: "var(--color-negative)",
+						color: "var(--color-gray-800)",
+					},
+				});
 			}
 
-			return result
-		}
+			return result;
+		},
 	},
-	created () {
+	created() {
 		this.load().then((response) => {
-			this.headline = response.headline
-			this.status()
-		})
+			this.headline = response.headline;
+			this.status();
+		});
 
-		this.$events.$on(updateEvents, this.status)
+		UPDATE_EVENTS.forEach((e) => this.$events.$on(e, this.status));
 	},
-	destroyed () {
-		this.$events.$off(updateEvents, this.status)
+	destroyed() {
+		UPDATE_EVENTS.forEach((e) => this.$events.$off(e, this.status));
 	},
 	methods: {
-		status () {
-			this.$api.get('git/status').then((entries) => {
-				this.stats = getStats()
+		status() {
+			this.$api.get("git/status").then((entries) => {
+				this.stats = getStats();
 
 				if (entries.length) {
-					this.updateStats(entries)
+					this.updateStats(entries);
 				}
-			})
+			});
 		},
-		updateStats (entries) {
-			this.stats.total = entries.length
+		updateStats(entries) {
+			this.stats.total = entries.length;
 
 			entries.forEach((entry) => {
-				let status = entry.staged || entry.unstaged
+				let status = entry.staged || entry.unstaged;
 
 				switch (status) {
-					case 'A':
-						this.stats.added++
-						break
-					case '?':
-						this.stats.untracked++
-						break
-					case 'M':
-						this.stats.modified++
-						break
-					case 'R':
-						this.stats.renamed++
-						break
-					case 'D':
-						this.stats.deleted++
+					case "A":
+						this.stats.added++;
+						break;
+					case "?":
+						this.stats.untracked++;
+						break;
+					case "M":
+						this.stats.modified++;
+						break;
+					case "R":
+						this.stats.renamed++;
+						break;
+					case "D":
+						this.stats.deleted++;
 				}
-			})
-		}
-	}
-}
+			});
+		},
+	},
+};
 </script>

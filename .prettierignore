@@ -6,4 +6,7 @@
 /site/accounts/
 /site/sessions/
 /vendor/
-/.php-cs-fixer.cache
+/composer*
+/index.css
+/index.js
+/package*

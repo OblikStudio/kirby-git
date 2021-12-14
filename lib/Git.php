@@ -61,7 +61,7 @@ class Git
 
 	public function option(string $name)
 	{
-		return ($this->config[$name] ?? null) ?? (option("oblik.git.$name") ?? null);
+		return $this->config[$name] ?? option("oblik.git.$name", null);
 	}
 
 	public function exec(string $command)
