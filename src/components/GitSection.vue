@@ -141,8 +141,10 @@ export default {
 		},
 	},
 	created() {
-		this.headline = this.$attrs.headline;
-		this.status();
+		this.load().then((response) => {
+			this.headline = response.headline;
+			this.status();
+		});
 
 		UPDATE_EVENTS.forEach((e) => this.$events.$on(e, this.status));
 	},
