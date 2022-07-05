@@ -5,19 +5,7 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-items v-if="data && data.commits.length">
-			<k-item
-				v-for="commit in data.commits"
-				:key="commit.hash"
-				:text="commit.subject"
-				:info="commit.hash"
-				:image="{
-					back: commit.new ? 'green' : 'black',
-					icon: commit.new ? 'upload' : 'circle-filled',
-					color: commit.new ? 'gray-800' : 'gray-500',
-				}"
-			></k-item>
-		</k-items>
+		<k-items v-if="listItems" :items="listItems" />
 		<template v-else>
 			<k-empty icon="circle-filled">No commits</k-empty>
 		</template>
@@ -44,6 +32,20 @@ export default {
 			page: 1,
 			limit: 15,
 		};
+	},
+	computed: {
+		listItems() {
+			return this.data?.commits.map((commit) => ({
+				key: commit.hash,
+				text: commit.subject,
+				info: commit.hash,
+				image: {
+					back: commit.new ? "green" : "black",
+					icon: commit.new ? "upload" : "circle-filled",
+					color: commit.new ? "gray-800" : "gray-500",
+				},
+			}));
+		},
 	},
 	created() {
 		this.$emit("paginate", {

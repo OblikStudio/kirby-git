@@ -7,14 +7,7 @@
 			</k-button-group>
 		</header>
 
-		<k-items v-if="list.length">
-			<k-item
-				v-for="entry in list"
-				:key="entry.image.icon"
-				:text="entry.text"
-				:image="entry.image"
-			></k-item>
-		</k-items>
+		<k-items v-if="list.length" :items="list" />
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
@@ -137,7 +130,10 @@ export default {
 				});
 			}
 
-			return result;
+			return result.map((result) => ({
+				...result,
+				key: result.image.icon,
+			}));
 		},
 	},
 	created() {

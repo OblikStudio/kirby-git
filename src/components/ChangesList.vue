@@ -5,14 +5,7 @@
 			<slot name="action"></slot>
 		</header>
 
-		<k-items v-if="entries">
-			<k-item
-				v-for="entry in entries"
-				:key="entry.file"
-				:text="entry.file"
-				:image="entry.image"
-			></k-item>
-		</k-items>
+		<k-items v-if="entries" :items="entries" />
 		<template v-else>
 			<k-empty icon="check">No changes</k-empty>
 		</template>
@@ -62,42 +55,41 @@ export default {
 			return this.pages[this.pageIdx];
 		},
 		entries() {
-			if (this.page) {
-				return this.page.map((entry) => {
-					let image = {
-						back: "black",
-						icon: "question",
-						color: "var(--color-gray-800)",
-					};
-
-					switch (entry.mode) {
-						case "?":
-						case "A":
-							image.back = "var(--color-positive)";
-							image.icon = "copy";
-							break;
-						case "M":
-							image.back = "var(--color-notice)";
-							image.icon = "edit";
-							break;
-						case "R":
-							image.back = "var(--color-notice)";
-							image.icon = "refresh";
-							break;
-						case "D":
-							image.back = "var(--color-negative)";
-							image.icon = "trash";
-					}
-
-					return {
-						file: entry.file,
-						mode: entry.mode,
-						image,
-					};
-				});
-			} else {
+			if (!this.page) {
 				return null;
 			}
+
+			return this.page.map((entry) => {
+				let image = {
+					back: "black",
+					icon: "question",
+					color: "var(--color-gray-800)",
+				};
+
+				switch (entry.mode) {
+					case "?":
+					case "A":
+						image.back = "var(--color-positive)";
+						image.icon = "copy";
+						break;
+					case "M":
+						image.back = "var(--color-notice)";
+						image.icon = "edit";
+						break;
+					case "R":
+						image.back = "var(--color-notice)";
+						image.icon = "refresh";
+						break;
+					case "D":
+						image.back = "var(--color-negative)";
+						image.icon = "trash";
+				}
+
+				return {
+					text: entry.file,
+					image,
+				};
+			});
 		},
 	},
 	methods: {
