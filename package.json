@@ -5,8 +5,8 @@
     "build": "kirbyup src/index.js"
   },
   "devDependencies": {
-    "kirbyup": "^0.21.1",
-    "prettier": "^2.4.1"
+    "kirbyup": "^1.1.0",
+    "prettier": "^2.7.1"
   },
   "prettier": {
     "htmlWhitespaceSensitivity": "ignore"
