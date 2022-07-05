@@ -6,7 +6,8 @@
 /site/accounts/
 /site/sessions/
 /vendor/
-/composer*
+
+/composer.lock
 /index.css
 /index.js
-/package*
+/package-lock.json

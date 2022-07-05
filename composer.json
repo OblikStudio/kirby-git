@@ -1,31 +1,31 @@
 {
-  "name": "oblik/kirby-git",
-  "description": "Shows you Git changes in the Kirby panel and allows you to add/commit/push them, manually or automatically.",
-  "type": "kirby-plugin",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Hristiyan Dodov",
-      "email": "h.dodov@gmail.com",
-      "homepage": "https://dodov.me/"
-    }
-  ],
-  "scripts": {
-    "fix": "php-cs-fixer fix"
-  },
-  "require": {
-    "getkirby/cms": "^3.7",
-    "getkirby/composer-installer": "^1.2"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.2"
-  },
-  "extra": {
-    "installer-name": "git"
-  },
-  "config": {
-    "allow-plugins": {
-      "getkirby/composer-installer": true
-    }
-  }
+	"name": "oblik/kirby-git",
+	"description": "Shows you Git changes in the Kirby panel and allows you to add/commit/push them, manually or automatically.",
+	"type": "kirby-plugin",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Hristiyan Dodov",
+			"email": "h.dodov@gmail.com",
+			"homepage": "https://dodov.me/"
+		}
+	],
+	"scripts": {
+		"fix": "php-cs-fixer fix"
+	},
+	"require": {
+		"getkirby/cms": "^3.7",
+		"getkirby/composer-installer": "^1.2"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^3.2"
+	},
+	"extra": {
+		"installer-name": "git"
+	},
+	"config": {
+		"allow-plugins": {
+			"getkirby/composer-installer": true
+		}
+	}
 }
