@@ -14,7 +14,7 @@
     "fix": "php-cs-fixer fix"
   },
   "require": {
-    "getkirby/cms": "^3.6",
+    "getkirby/cms": "^3.7",
     "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
@@ -22,5 +22,10 @@
   },
   "extra": {
     "installer-name": "git"
+  },
+  "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
   }
 }
