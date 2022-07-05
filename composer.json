@@ -1,15 +1,29 @@
 {
 	"name": "oblik/kirby-git",
 	"description": "Shows you Git changes in the Kirby panel and allows you to add/commit/push them, manually or automatically.",
-	"type": "kirby-plugin",
 	"license": "MIT",
+	"version": "2.0.0",
+	"type": "kirby-plugin",
+	"keywords": [
+		"kirby",
+		"kirby-plugin"
+	],
 	"authors": [
+		{
+			"name": "Oblik Studio",
+			"email": "hello@oblik.studio",
+			"homepage": "https://oblik.studio/"
+		},
 		{
 			"name": "Hristiyan Dodov",
 			"email": "h.dodov@gmail.com",
-			"homepage": "https://dodov.me/"
+			"homepage": "https://dodov.dev/"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/OblikStudio/kirby-git/issues",
+		"source": "https://github.com/OblikStudio/kirby-git"
+	},
 	"scripts": {
 		"fix": "php-cs-fixer fix"
 	},
