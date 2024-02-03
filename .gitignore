@@ -7,3 +7,6 @@
 /site/sessions/
 /vendor/
 /.php-cs-fixer.cache
+
+# Kirby cache files
+*.cache
