@@ -1,5 +1,5 @@
 <template>
-	<section class="area-git-changes-list">
+	<section class="k-section area-git-changes-list">
 		<header class="k-section-header">
 			<k-headline>{{ finalHeadline }}</k-headline>
 			<k-button-group v-if="list.length">
