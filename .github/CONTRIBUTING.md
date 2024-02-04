@@ -19,6 +19,21 @@ script. It will:
 
 If something doesn't work out, just check what the script does and do it manually.
 
+### Docker
+
+If you don't want to deal with Git, PHP, and Composer versions on your system, you can use Docker:
+
+```bash
+docker compose up --build
+```
+
+Then you could open a terminal inside the container and use Composer:
+
+```
+root@dc786c020761:/# composer --version
+Composer version 2.6.6 2023-12-08 18:32:26
+```
+
 ## Code Formatting
 
 I follow PSR for PHP and Prettier defaults for everything else. The only
