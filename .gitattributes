@@ -8,6 +8,8 @@
 /.htaccess              export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /.prettierignore        export-ignore
+/docker-compose.yml     export-ignore
+/Dockerfile             export-ignore
 /index.site.php         export-ignore
 /package-lock.json      export-ignore
 /package.json           export-ignore
